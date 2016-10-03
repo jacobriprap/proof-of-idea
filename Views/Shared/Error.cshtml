@@ -1,0 +1,20 @@
+﻿@model System.Web.Mvc.HandleErrorInfo
+
+@{
+    ViewBag.Title = "Error";
+}
+
+<h1 class="text-danger">Unexpected error.</h1>
+<h2 class="text-danger">An error occurred while processing your request.</h2>
+@if(HttpContext.Current.Error!=null)
+{
+    <p>HttpContext.Current.Error</p>
+}
+
+@if (HttpContext.Current.AllErrors != null)
+{
+    foreach (var error in HttpContext.Current.AllErrors)
+    {
+        <p>@error.ToString()</p>
+    }
+}

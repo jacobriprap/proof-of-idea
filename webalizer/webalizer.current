@@ -1,0 +1,605 @@
+# Webalizer V2.01-09 Incremental Data - 10/03/2016 01:43:35
+2016 10 3 1 43 35
+454 0 113 0 25 46 4135614 330 237 0
+3 2 42 1 3
+203 0 1815175 78 158 113
+247 0 2279799 80 170 122
+4 0 40640 3 2 2
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+9 0 91440 7
+11 0 91554 10
+30 0 291999 28
+10 0 94512 10
+1 0 2920 1
+6 0 29200 6
+3 0 18980 3
+5 0 17460 5
+16 0 152872 15
+4 0 29118 3
+16 0 162826 16
+22 0 183568 19
+32 0 279070 17
+18 0 178946 18
+22 0 157410 21
+11 0 75633 11
+54 0 476853 30
+27 0 264494 15
+3 0 23278 3
+27 0 274510 14
+31 0 300359 18
+26 0 262931 13
+37 0 376110 14
+33 0 299571 33
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+454
+0
+0
+0
+0
+# -urls- 
+# End Of Table - urls
+# -sites- (monthly)
+sol-fttb.150.120.119.46.sovam.net.ua
+0 6 0 37960 1 1475320135
+-
+baiduspider-180-76-15-157.crawl.baidu.com
+0 1 0 0 1 1475364055
+-
+baiduspider-180-76-15-160.crawl.baidu.com
+0 1 0 1460 1 1475364073
+-
+94.191.185.56.mobile.3.dk
+0 1 0 10160 1 1475310733
+-
+baiduspider-220-181-108-78.crawl.baidu.com
+0 1 0 2920 1 1475432309
+-
+baiduspider-180-76-15-20.crawl.baidu.com
+0 1 0 2920 1 1475306354
+-
+msnbot-207-46-13-155.search.msn.com
+0 7 0 69480 6 1475435754
+-
+crawl-66-249-76-74.googlebot.com
+0 1 0 10160 1 1475348978
+-
+178-137-84-86-broadband.kyivstar.net
+0 12 0 81760 1 1475427093
+-
+31.13.102.100
+0 3 0 30537 3 1475419536
+-
+31.13.102.101
+0 6 0 61074 5 1475438196
+-
+31.13.102.102
+0 4 0 40716 4 1475423495
+-
+31.13.102.103
+0 3 0 30537 3 1475418004
+-
+31.13.102.104
+0 4 0 40716 3 1475402806
+-
+31.13.102.105
+0 5 0 50895 5 1475402822
+-
+31.13.102.106
+0 3 0 30537 3 1475437368
+-
+31.13.102.107
+0 5 0 50895 3 1475317216
+-
+31.13.102.108
+0 4 0 40716 3 1475402806
+-
+31.13.102.109
+0 4 0 40716 3 1475440468
+-
+31.13.102.110
+0 5 0 50895 5 1475444851
+-
+31.13.102.111
+0 4 0 40716 3 1475423495
+-
+31.13.102.116
+0 7 0 71253 6 1475440469
+-
+31.13.102.117
+0 1 0 10179 1 1475284760
+-
+31.13.102.118
+0 4 0 40716 4 1475436675
+-
+li1194-64.members.linode.com
+0 2 0 10423 1 1475407027
+-
+31.13.102.119
+0 4 0 40716 4 1475448410
+-
+134-249-65-218-broadband.kyivstar.net
+0 6 0 29200 2 1475387716
+-
+cm-84.213.178.51.getinternet.no
+0 1 0 10184 0 0
+-
+31.13.102.120
+0 1 0 10179 1 1475440469
+-
+31.13.102.121
+0 4 0 40716 4 1475449332
+-
+31.13.102.122
+0 8 0 81432 5 1475424965
+-
+31.13.102.123
+0 6 0 61074 6 1475440468
+-
+31.13.102.124
+0 3 0 30537 3 1475397225
+-
+31.13.102.125
+0 5 0 50895 4 1475443172
+-
+31.13.102.126
+0 4 0 40716 3 1475396846
+-
+31.13.102.127
+0 3 0 30537 3 1475423495
+-
+crawl13.exabot.com
+0 2 0 5472 1 1475354750
+-
+baiduspider-123-125-71-103.crawl.baidu.com
+0 1 0 2920 1 1475381047
+-
+crawl-66-249-76-112.googlebot.com
+0 2 0 20320 2 1475310703
+-
+5-248-238-110-broadband.kyivstar.net
+0 6 0 29200 1 1475339027
+-
+94.191.187.80.mobile.3.dk
+0 11 0 111760 1 1475445848
+-
+baiduspider-180-76-15-145.crawl.baidu.com
+0 1 0 2920 0 0
+-
+baiduspider-180-76-15-156.crawl.baidu.com
+0 1 0 1460 1 1475392776
+-
+173.252.123.130
+0 1 0 10179 1 1475334251
+-
+173.252.123.137
+0 1 0 10179 1 1475413327
+-
+baiduspider-180-76-15-16.crawl.baidu.com
+0 1 0 2920 1 1475450453
+-
+31.13.110.100
+0 2 0 20358 2 1475450206
+-
+31.13.110.102
+0 3 0 30537 3 1475450209
+-
+31.13.110.103
+0 3 0 30537 3 1475406780
+-
+31.13.110.104
+0 1 0 10179 1 1475377581
+-
+31.13.110.105
+0 5 0 50895 2 1475451607
+-
+31.13.110.106
+0 3 0 30537 3 1475451579
+-
+31.13.110.107
+0 3 0 30537 3 1475451535
+-
+31.13.110.108
+0 2 0 20358 2 1475338649
+-
+31.13.110.109
+0 1 0 10179 1 1475290368
+-
+192.187.101.170
+0 10 0 101600 2 1475369175
+-
+31.13.110.110
+0 2 0 20358 2 1475430979
+-
+31.13.110.111
+0 4 0 40716 4 1475451568
+-
+31.13.110.117
+0 1 0 10179 1 1475449978
+-
+31.13.110.118
+0 2 0 20358 2 1475451535
+-
+31.13.110.119
+0 1 0 10179 1 1475289488
+-
+31.13.110.121
+0 6 0 61074 4 1475450228
+-
+31.13.110.122
+0 4 0 40716 3 1475451538
+-
+31.13.110.123
+0 6 0 61074 4 1475437904
+-
+31.13.110.124
+0 2 0 20358 2 1475449978
+-
+31.13.110.125
+0 3 0 30537 3 1475450199
+-
+31.13.110.126
+0 3 0 30537 3 1475450329
+-
+31.13.110.127
+0 5 0 50895 4 1475449640
+-
+62.82.82.185.static.user.ono.com
+0 14 0 142240 1 1475426809
+-
+host2-2-dynamic.61-82-r.retail.telecomitalia.it
+0 1 0 10160 1 1475426969
+-
+202.46.55.134
+0 1 0 2920 1 1475325858
+-
+ec2-54-165-233-122.compute-1.amazonaws.com
+0 2 0 8760 1 1475287616
+-
+sol-fttb.156.155.118.46.sovam.net.ua
+0 5 0 26280 2 1475330712
+-
+092-111-218-153.static.chello.nl
+0 11 0 111760 1 1475342834
+-
+123.125.67.227
+0 1 0 2920 1 1475324581
+-
+ec2-54-196-11-16.compute-1.amazonaws.com
+0 2 0 8760 1 1475401060
+-
+baiduspider-180-76-15-140.crawl.baidu.com
+0 1 0 2920 1 1475306341
+-
+baiduspider-123-125-71-81.crawl.baidu.com
+0 1 0 10160 1 1475439347
+-
+crawl-66-249-76-113.googlebot.com
+0 3 0 30480 0 0
+-
+104.193.88.243
+0 1 0 10160 1 1475327858
+-
+crawl-66-249-75-165.googlebot.com
+0 3 0 30480 2 1475459015
+-
+net-93-71-253-197.cust.vodafonedsl.it
+0 1 0 10160 1 1475370234
+-
+37-115-187-217-broadband.kyivstar.net
+0 3 0 18980 1 1475391143
+-
+baiduspider-180-76-15-8.crawl.baidu.com
+0 1 0 0 1 1475335165
+-
+64.74.215.113
+0 1 0 263 1 1475397657
+-
+crawl-66-249-75-169.googlebot.com
+0 1 0 10160 0 0
+-
+109.56.45.6.mobile.3.dk
+0 2 0 20320 1 1475318545
+-
+31.13.110.96
+0 1 0 10179 1 1475437904
+-
+31.13.110.97
+0 3 0 30537 1 1475451614
+-
+31.13.110.98
+0 5 0 50895 4 1475406792
+-
+31.13.110.99
+0 1 0 10179 1 1475429731
+-
+178-137-160-205-broadband.kyivstar.net
+0 9 0 40880 1 1475331607
+-
+crawl-66-249-75-173.googlebot.com
+0 2 0 20320 1 1475360882
+-
+baiduspider-123-125-71-109.crawl.baidu.com
+0 1 0 2920 1 1475379048
+-
+crawl-66-249-76-76.googlebot.com
+0 1 0 10160 0 0
+-
+178-137-167-230-broadband.kyivstar.net
+0 9 0 73000 3 1475429610
+-
+baiduspider-123-125-71-84.crawl.baidu.com
+0 1 0 2920 1 1475413108
+-
+baiduspider-180-76-15-150.crawl.baidu.com
+0 1 0 2920 0 0
+-
+baiduspider-180-76-15-158.crawl.baidu.com
+0 2 0 2920 2 1475392790
+-
+baiduspider-180-76-15-161.crawl.baidu.com
+0 1 0 0 1 1475335150
+-
+baiduspider-180-76-15-14.crawl.baidu.com
+0 1 0 1460 1 1475421572
+-
+baiduspider-180-76-15-29.crawl.baidu.com
+0 1 0 0 1 1475450471
+-
+31.13.102.96
+0 8 0 81432 5 1475423496
+-
+31.13.102.97
+0 3 0 30537 3 1475419575
+-
+31.13.102.98
+0 8 0 81432 7 1475395580
+-
+31.13.102.99
+0 4 0 40716 3 1475438196
+-
+baiduspider-180-76-15-32.crawl.baidu.com
+0 1 0 2920 1 1475421557
+-
+static.88-198-22-8.clients.your-server.de
+0 2 0 5792 0 0
+-
+87-56-104-63-dynamic.dk.customer.tdc.net
+0 84 0 853440 6 1475444031
+-
+crawl-66-249-76-111.googlebot.com
+0 3 0 30480 2 1475455966
+-
+178-137-82-226-broadband.kyivstar.net
+0 5 0 46600 2 1475412166
+-
+sogouspider-123-126-113-81.crawl.sogou.com
+0 2 0 20358 1 1475442321
+-
+static.170.89.9.5.clients.your-server.de
+0 1 0 10179 0 0
+-
+# End Of Table - sites (monthly)
+# -sites- (daily)
+crawl-66-249-76-113.googlebot.com
+0 1 0 10160 0 0
+-
+crawl-66-249-75-165.googlebot.com
+0 1 0 10160 1 1475459015
+-
+crawl-66-249-76-111.googlebot.com
+0 2 0 20320 1 1475455966
+-
+# End Of Table - sites (daily)
+# -referrers- 
+http://pokerniydom.ru/
+0 3
+http://na-telefon.biz/docheri.html
+0 2
+http://mylesosibirsk.ru/
+0 3
+http://my-big-family.com/
+0 3
+http://www.absolute-s.ru/
+0 3
+http://www.blagovest-med.ru/
+0 3
+http://filmgo.ru/
+0 3
+http://indiakino.net/
+0 2
+http://rukino.org/
+0 3
+http://idc.com.ua/
+0 3
+http://uptime.com/proof-of-idea.com
+1 1
+http://lm.facebook.com/lsr.php
+0 3
+http://buynorxx.com/
+0 3
+http://x-lime.net/
+0 3
+http://kiev.mistr-x.org/
+0 3
+http://dengi-pod-zalog-nedvizhimosti.ru/
+0 3
+http://australia-opening-times.com/
+0 3
+http://1-free-share-buttons.com
+0 1
+http://btvn.ru/
+0 3
+http://eropornosex.ru/
+0 3
+http://video-chat.cn/
+0 3
+http://dokfilms.net/
+0 3
+http://firma-legion.ru/
+0 3
+http://1-99seo.com/try.php
+0 1
+http://yourdesires.ru/
+0 3
+# End Of Table - referrers
+# -agents- 
+Mozilla/4.0+(compatible;+MSIE+6.0;+Windows+NT+5.1;+SV1;+.NET+CLR+1.1.4322)
+0 3
+'Mozilla/5.0+(compatible;+MSIE+9.0;+Windows+NT+6.1;+Trident/5.0)'
+0 1
+Opera/7.60+(Windows+NT+5.2;+U)++[en]+(IBM+EVV/3.0/EAK01AG9/LE)
+0 3
+Mozilla/5.0+(Macintosh;+Intel+Mac+OS+X+10_11_6)+AppleWebKit/602.1.50+(KHTML,+like+Gecko)
+0 6
+Mozilla/4.0+(compatible;+MSIE+6.0;+Windows+XP)
+0 3
+Mozilla/4.0+(compatible;+MSIE+6.0;+MSIE+5.5;+Windows+NT+4.0)+Opera+7.0+[en]
+0 3
+Mozilla/5.0+(compatible;+MSIE+10.0;+Windows+NT+6.2;+WOW64;+Trident/6.0;+.NET4.0E;+.NET4.0C;+InfoPath.3;+.NET+CLR+3.5.30729;+.NET+CLR+2.0.50727;+.NET+CLR+3.0.30729;+MS-RTC+LM+8)
+0 1
+Mozilla/5.0+(iPhone;+CPU+iPhone+OS+9_3_5+like+Mac+OS+X)+AppleWebKit/601.1.46+(KHTML,+like+Gecko)+Mobile/13G36+[FBAN/FBIOS;FBAV/65.0.0.53.139;FBBV/40125428;FBRV/0;FBDV/iPhone8,1;FBMD/iPhone;FBSN/iPhon
+0 1
+Mozilla/5.0+(iPhone;+CPU+iPhone+OS+10_0+like+Mac+OS+X)+AppleWebKit/602.1.38+(KHTML,+like+Gecko)+Version/10.0+Mobile/14A300+Safari/602.1
+0 7
+Safari/11602.1.50.0.10+CFNetwork/760.6.3+Darwin/15.6.0+(x86_64)
+0 72
+Mozilla/4.0+(compatible;+MSIE+6.0;+Windows+98;+Win+9x+4.90;+Creative)
+0 3
+Mozilla/5.0+(compatible;+Googlebot/2.1;++http://www.google.com/bot.html)
+0 12
+Mozilla/5.0+(compatible;+Uptimebot/1.0;++http://www.uptime.com/uptimebot)
+0 2
+Opera/7.54+(Windows+NT+5.1;+U)++[pl]
+0 2
+Mozilla/5.0+(compatible;+Baiduspider/2.0;++http://www.baidu.com/search/spider.html)
+0 17
+Mozilla/5.0+(iPhone;+CPU+iPhone+OS+8_0+like+Mac+OS+X)+AppleWebKit/600.1.3+(KHTML,+like+Gecko)+Version/8.0+Mobile/12A4345d+Safari/600.1.4
+0 1
+Mozilla/5.0+(compatible;+Exabot/3.0;++http://www.exabot.com/go/robot)
+0 2
+Mozilla/5.0+(X11;+Ubuntu;+Linux+i686;+rv:24.0)+Gecko/20100101+Firefox/24.0
+0 1
+MobileSafari/602.1+CFNetwork/808.0.2+Darwin/16.0.0
+0 20
+Mozilla/4.0+(compatible;+MSIE+6.0;+Windows+NT+5.1)
+0 2
+Mozilla/4.0+(compatible;+MSIE+4.01;+Digital+AlphaServer+1000A+4/233;+Windows+NT;+Powered+By+64-Bit+Alpha+Processor)
+0 6
+Safari/10602.1.50.0.10+CFNetwork/720.5.7+Darwin/14.5.0+(x86_64)
+0 12
+Mozilla/4.0+(compatible;+MSIE+6.0;+Windows+NT+5.1;+KKman2.0)
+0 3
+Mozilla/5.0+(Windows+NT+5.1;+rv:6.0.2)+Gecko/20100101+Firefox/6.0.2
+0 2
+Mozilla/5.0+(Windows+NT+6.1;+WOW64;+rv:40.0)+Gecko/20100101+Firefox/40.1
+0 2
+Mozilla/5.0+(compatible;+MJ12bot/v1.4.5;+http://www.majestic12.co.uk/bot.php?+)
+0 2
+Mozilla/5.0+(Windows+NT+6.1;+rv:31.0)+Gecko/20100101+Firefox/31.0
+0 2
+Mozilla/4.0+(compatible;+MSIE+6.0;+Windows+NT+5.1;+.NET+CLR+1.1.4322;+FDM)
+0 3
+Mozilla/5.0+(Windows+NT+6.1;+WOW64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/35.0.1916.153+Safari/537.36
+0 1
+Mozilla/5.0+(compatible;+bingbot/2.0;++http://www.bing.com/bingbot.htm)
+0 7
+Mozilla/5.0+(iPhone;+CPU+iPhone+OS+9_3_5+like+Mac+OS+X)+AppleWebKit/601.1.46+(KHTML,+like+Gecko)+Version/9.0+Mobile/13G36+Safari/601.1
+0 2
+Mozilla/5.0+(Windows+NT+6.1;+WOW64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/36.0.1985.143+Safari/537.36
+0 1
+Mozilla/4.0+(compatible;+MSIE+6.0;+Windows+NT+5.1;+SV1)
+0 3
+Sogou+web+spider/4.0(+http://www.sogou.com/docs/help/webmasters.htm#07)
+0 2
+Mozilla/4.0+(compatible;+MSIE+6.0;+America+Online+Browser+1.1;+rev1.2;+Windows+NT+5.1;+SV1;+.NET+CLR+1.1.4322)
+0 3
+Mozilla/5.0+(Linux;+Android+6.0.1;+Nexus+5X+Build/MMB29P)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/41.0.2272.96+Mobile+Safari/537.36+(compatible;+Googlebot/2.1;++http://www.google.com/bot.html)
+0 3
+Opera/7.11+(Windows+NT+5.1;+U)+[en]
+0 3
+Mozilla/4.0+(compatible;+MSIE+6.0;+Windows+NT+5.1;+Deepnet+Explorer+1.5.0;+.NET+CLR+1.0.3705)
+0 3
+Mozilla/4.0+(compatible;+MSIE+6.0;+Windows+NT+5.0;+T312461)
+0 12
+Mozilla/5.0+(Windows+NT+10.0;+WOW64)+AppleWebKit/537.36+(KHTML,+like+Gecko)+Chrome/45.0.2454.93+Safari/537.36
+0 3
+facebookexternalhit/1.1+(+http://www.facebook.com/externalhit_uatext.php)
+0 197
+SAMSUNG-SGH-E250/1.0+Profile/MIDP-2.0+Configuration/CLDC-1.1+UP.Browser/6.2.3.3.c.1.101+(GUI)+MMP/2.0+(compatible;+Googlebot-Mobile/2.1;++http://www.google.com/bot.html)
+0 1
+Mozilla/4.0+(compatible;+MSIE+5.5;+Windows+NT+5.0)
+0 3
+Mozilla/4.0+(compatible;+MSIE+6.0;+Windows+NT+5.1;+en)+Opera+8.00
+0 3
+Mozilla/5.0+(Macintosh;+Intel+Mac+OS+X+10_10_5)+AppleWebKit/602.1.50+(KHTML,+like+Gecko)
+0 1
+Mozilla/5.0+(iPhone;+CPU+iPhone+OS+10_0_2+like+Mac+OS+X)+AppleWebKit/602.1.50+(KHTML,+like+Gecko)+Version/10.0+Mobile/14A456+Safari/602.1
+0 2
+# End Of Table - agents
+# -search strings- 
+# End Of Table - search strings
+# -usernames- 
+# End Of Table - usernames
+# -Error404- 
+# End Of Table - Error404-

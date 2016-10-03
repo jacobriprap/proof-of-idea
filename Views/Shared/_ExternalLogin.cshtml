@@ -1,0 +1,20 @@
+﻿@model GroupM.CSE.ProofOfIdea.Models.ExternalLoginListViewModel
+@using Microsoft.Owin.Security
+@{
+    var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
+    using (Html.BeginForm("ExternalLogin", "Account", new { ReturnUrl = Model.ReturnUrl }))
+    {
+        @Html.AntiForgeryToken()
+        foreach (AuthenticationDescription authProvider in loginProviders)
+        {
+            <div class="form-group text-center">
+                <button class="btn btn-default" style="width:215px;height:41px;background-image:url('/Content/externalauth/@authProvider.AuthenticationType-Default.png')"
+                        onmouseover="this.style = 'width:215px;height:41px;background-image:url(/Content/externalauth/@authProvider.AuthenticationType-hover.png)'" onmouseout="this.style = 'width:215px;height:41px;background-image:url(/Content/externalauth/@authProvider.AuthenticationType-default.png)'"
+                        type="submit" name="provider" value="@authProvider.AuthenticationType" title="@GroupM.CSE.ProofOfIdea.ResourceLang.LoginExternalAuthDescription @authProvider.Caption account">
+                </button>
+            </div>
+        }
+    }
+}
+    
+

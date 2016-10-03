@@ -1,0 +1,78 @@
+﻿@using GroupM.CSE.ProofOfIdea.Models
+@using GroupM.CSE.ProofOfIdea
+@using Microsoft.AspNet.Identity.Owin
+@using Microsoft.AspNet.Identity
+@{
+    string userIdToShow = User.Identity.GetUserId();
+    ApplicationUser loggedInUser = null;
+    // check if logged in user is the same as the one requested
+    if (!String.IsNullOrWhiteSpace(ViewBag.UserId) && ViewBag.UserId != userIdToShow)
+    {
+        // Not the same user, so likely an admin looking on behalf of
+        // Find the requested user profile
+        userIdToShow = ViewBag.UserId;
+        loggedInUser = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().FindByName(User.Identity.Name);
+    }
+
+    // Get the current logged in user
+    ApplicationUser user = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(userIdToShow);
+    string userFriendlyName = (user != null && user.Profile != null ? user.FirstName : User.Identity.Name);
+    ViewBag.Title = ResourceLang.Hello + " " + userFriendlyName;
+}
+@if (loggedInUser != null)
+{
+    <div class="cseRedBox"><h3 style="color:white">Hi @(loggedInUser.Profile != null ? loggedInUser.FirstName : loggedInUser.UserName)!<br />Please note. You are viewing this profile on behalf of the user below</h3></div>
+}
+
+<h1 style="font-size:4em;font-weight:bold"><a href="@Url.Action("Edit","Profile")">@ViewBag.Title</a></h1>
+<h5><a href="@Url.Action("Edit","Profile")">@ResourceLang.EditYourProfile</a></h5>
+<h2 class="cseGrey">@ResourceLang.NewsFromCSE</h2>
+
+<div class="cseBottomLine">
+    <div class="fb-page" data-href="https://www.facebook.com/csenews" data-width="500" data-small-header="true" data-adapt-container-width="true" data-hide-cover="true" data-show-facepile="false" data-show-posts="true"><div class="fb-xfbml-parse-ignore"><blockquote cite="https://www.facebook.com/csenews"><a href="https://www.facebook.com/csenews">Copenhagen School of Entrepreneurship</a></blockquote></div></div>
+</div>
+
+<div class="cseBottomLine">
+    <h3 class="cseBlue" style="padding-bottom:20px">@ResourceLang.StartupsAffiliatedWith</h3>
+    <div class="row">
+        @using (var db = new ApplicationDbContext())
+        {
+            var companyList = db.Companies.Where(c => c.Members.FirstOrDefault(m => m.Id == userIdToShow) != null);
+            if (companyList.Count() > 0)
+            {
+                foreach (var dbCompany in companyList)
+                {
+                    <a href="/Company/Edit/@dbCompany.Id">
+                        <div class="col-lg-2 text-center" style="padding-bottom:20px">
+                            <img class="thumbnail" style="width:80%;min-width:100px;max-width:200px;min-height:80px;padding:16px" src="@(!String.IsNullOrEmpty(dbCompany.LogoUrl) ? dbCompany.LogoUrl : "/content/images/profilelogo_cse.png")" /><br />
+                            <h5>@dbCompany.Name</h5>
+                        </div>
+                    </a>
+                }
+            }
+            else
+            {
+                <i style="font-size:1.5em">@ResourceLang.StartupsNoAffiliations</i>
+            }
+        }
+    </div>
+</div>
+
+<div class="cseBottomLine text-center">
+    <h2 class="cseGrey" style="padding-bottom:30px">@ResourceLang.Clusters</h2>
+    <div class="row">
+        @using (var db = new ApplicationDbContext())
+        {
+            foreach (var dbCluster in db.Clusters)
+            {
+                <div class="col-lg-2 text-center" style="padding-bottom:20px">
+                    @if (!String.IsNullOrWhiteSpace(dbCluster.Name))
+                    {
+                        <button class="cseButtonSolidMd" onclick="window.location='/cluster?Filter=@dbCluster.Name'">@dbCluster.Name</button>
+                    }
+                </div>
+            }
+        }
+    </div>
+</div>
+

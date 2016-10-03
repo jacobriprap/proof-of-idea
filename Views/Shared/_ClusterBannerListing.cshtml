@@ -1,0 +1,22 @@
+﻿@using GroupM.CSE.ProofOfIdea.Models
+<div class="row">
+    <div class="text-center">
+        <h3 class="cseBlue" style="padding-bottom:30px">@ResourceLang.Clusters</h3>
+        <div class="row col-lg-12">
+            @using (var db = new ApplicationDbContext())
+            {
+                bool offsetAdded = false;
+                foreach (var dbCluster in db.Clusters)
+                {
+                    <div class="@(!offsetAdded?"col-lg-offset-1":"") col-lg-2 text-center" style="padding-bottom:20px">
+                        @if (!String.IsNullOrWhiteSpace(dbCluster.Name))
+                    {
+                            <button class="cseButtonSolidMd" onclick="window.location='/cluster?Filter=@dbCluster.Name'">@dbCluster.Name</button>
+                            offsetAdded = true;
+                        }
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>

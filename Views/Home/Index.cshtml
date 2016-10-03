@@ -1,0 +1,33 @@
+﻿@using GroupM.CSE.ProofOfIdea.Models
+@{
+    ViewBag.Title = GroupM.CSE.ProofOfIdea.ResourceLang.Welcome;
+}
+
+<div class="row">
+    @if (!Request.IsAuthenticated)
+    {
+        <h2>
+            @Html.Raw(ResourceLang.FrontPagePreloginHeader.Replace("\r\n", "<br>"))
+        </h2>
+        <p>
+            @Html.Raw(ResourceLang.FrontPagePreloginBody.Replace("\r\n", "<br>"))
+        </p>
+        <div class="row text-center">
+            <div class="col-md-4 col-md-offset-4"><button class="cseButtonSolidLg" data-toggle="modal" data-target="#diagSignup" data-backdrop="true">@GroupM.CSE.ProofOfIdea.ResourceLang.Signup.ToUpper()</button></div>
+        </div>
+    }
+    else
+    {
+        <h2>
+            @Html.Raw(ResourceLang.FrontPageLoggedInHeader.Replace("\r\n", "<br>"))
+        </h2>
+        <p>
+            @Html.Raw(ResourceLang.FrontPageLoggedInBody.Replace("\r\n", "<br>"))
+        </p>
+    }
+</div>
+@{
+    Html.RenderPartial("_CompanyBannerListing");
+    Html.RenderPartial("_ClusterBannerListing");
+}
+

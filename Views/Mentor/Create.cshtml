@@ -1,0 +1,172 @@
+﻿@using GroupM.CSE.ProofOfIdea.Models
+@model MentorViewModel
+@{
+    ViewBag.Title = ResourceLang.Mentor.ToUpper();
+}
+
+@Scripts.Render("~/bundles/jquery")
+@section scripts
+{
+    <script>
+        function showFilePreview(event) {
+            var input = event.target;
+            console.log(event);
+
+            var reader = new FileReader();
+            reader.onload = function () {
+                if (reader.result && reader.result.toString().length > 11 && reader.result.toString().substring(0, 11) == 'data:image/') {
+                    var dataURL = reader.result;
+                    $("#profileImagePreview").attr('src', dataURL);
+                    $("#profileImagePreview").show();
+                }
+            };
+            reader.readAsDataURL(input.files[0]);
+        };
+
+        $(document).ready(function () {
+            $("#profileImageUrl").change(function (e) {
+                showFilePreview(e);
+            });
+            $("#profileImageUploadClickHandler").on("click", function (e) {
+                $("#profileImageUrl").trigger("click");
+                e.preventDefault();
+            });
+
+            $("#profileImageUrl").on("click", function (e) {
+                e.stopImmediatePropagation();
+            });
+
+            var config = {
+                '.chosen-select': {},
+                '.chosen-select-deselect': { allow_single_deselect: true },
+                '.chosen-select-no-single': { disable_search_threshold: 10 },
+                '.chosen-select-no-results': { no_results_text: 'Press enter to add' },
+                '.chosen-select-width': { width: "100%" }
+            }
+            for (var selector in config) {
+                $(selector).chosen(config[selector]);
+
+            }
+            var select, chosen;
+
+            // cache the select element as we'll be using it a few times
+            select = $(".chosen-select");
+
+            // init the chosen plugin
+            select.chosen();
+
+            // get the chosen object (any type, single or multiple)
+            chosen = $('.chosen-container');
+            // chosen = $('.chosen-select-single');
+            // chosen = $('.chosen-container-multi');
+
+            // Bind the keyup event to the search box input
+            chosen.find('input').keyup(function (e) {
+                // if we hit Enter and the results list is empty (no matches) add the option
+                if (e.which == 13 && chosen.find('li.no-results').length > 0) {
+                    var option = $("<option>").val(this.value).text(this.value);
+
+                    // add the new option
+                    select.prepend(option);
+                    // automatically select it
+                    select.find(option).prop('selected', true);
+                    // trigger the update
+                    select.trigger("chosen:updated");
+                }
+            });
+        });
+    </script>
+}
+
+<div class="row">
+    @using (Html.BeginForm("Create", "Mentor", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        @Html.HiddenFor(m => m.UserId, new { @Value = (Model != null ? Model.UserId : "") })
+        <div class="col-md-8 container-fluid">
+            <div class="cseButtonSolidMd" style="width:100%;text-align:left">
+                <span class="">@ResourceLang.ProfileInfo.ToUpper()</span>
+            </div>
+            <div class="cseLightGreyFrame" style="width:100%;padding:20px">
+                <div class="form-group cseInputLine">
+                    @Html.LabelFor(m => m.FirstName, ResourceLang.Name, new { @class = "col-md-2 control-label text-left" })
+                    <div class="col-sm-4 col-sm-offset-2">
+                        @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", @placeholder = ResourceLang.FirstName })
+                        @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", @placeholder = ResourceLang.LastName })
+                        @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group cseInputLine">
+                    @Html.LabelFor(m => m.Email, ResourceLang.Email, new { @class = "col-md-2 control-label text-left" })
+                    <div class="col-sm-4 pull-right">
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = ResourceLang.Email })
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group cseInputLine">
+                    @Html.LabelFor(m => m.PhoneNumber, ResourceLang.PhoneNumber, new { @class = "col-md-2 control-label text-left" })
+                    <div class="col-sm-4 pull-right">
+                        @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control", @placeholder = ResourceLang.PhoneNumber })
+                        @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group cseInputLine">
+                    @Html.LabelFor(m => m.LinkedinUrl, ResourceLang.Linkedin, new { @class = "col-md-2 control-label text-left" })
+                    <div class="col-sm-4 pull-right">
+                        @Html.TextBoxFor(m => m.LinkedinUrl, new { @class = "form-control", @placeholder = ResourceLang.Linkedin })
+                        @Html.ValidationMessageFor(m => m.LinkedinUrl, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group cseInputLine">
+                    @Html.LabelFor(m => m.Competences, ResourceLang.Competences, new { @class = "col-md-2 control-label text-left" })
+                    <div class="col-sm-4 pull-right">
+                        <select class="chosen-select" id="Competences" name="Competences" multiple="multiple">
+                            @{
+                                if(Model!=null&&Model.Competences!= null&& Model.Competences.Count()>0)
+                                {
+                                    using (var db = new ApplicationDbContext())
+                                    {
+                                        foreach(string compName in db.CompetenceItems.Select(ci=>ci.Name).Distinct())
+                                        {
+                                            <option value="@compName" @(Model.Competences.Contains(compName)?"selected":"")>@compName</option>
+                                        }
+                                    }
+                                } else
+                                {
+                                    <option value="">Enter text and press enter to add</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group cseInputLine">
+                    @Html.LabelFor(m => m.Biography, ResourceLang.Biography, new { @class = "col-md-2 control-label text-left" })
+                    <div class="col-sm-4 pull-right">
+                        @Html.TextAreaFor(m => m.Biography, new { @class = "form-control", @placeholder = ResourceLang.Biography })
+                        @Html.ValidationMessageFor(m => m.Biography, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" style="padding-top:20px">
+                @if (Model != null)
+                {
+                    <button type="submit" class="cseButtonSolidMd">@ResourceLang.MentorSave.ToUpper()</button>
+                }
+                else
+                {
+                    <button type="submit" class="cseButtonSolidMd">@ResourceLang.MentorCreate.ToUpper()</button>
+                }
+            </div>
+        </div>
+        <div class="col-md-offset-2 col-md-2 pull-right">
+            <a href="#" id="profileImageUploadClickHandler" class="center-block text-center cseBlueFrame thumbnail">
+                <img class="text-center" id="profileImagePreview" src="@(Model!=null&&!String.IsNullOrWhiteSpace(Model.ImageUrl)?Model.ImageUrl:"/Content/Images/profileimage.png")" style="min-width:132px;min-height:132px;padding:16px" />
+                <input style="visibility:hidden;height:0;" name="profileImageUrl" id="profileImageUrl" accept="image/*" type="file" />
+            </a>
+        </div>
+                                }
+</div>

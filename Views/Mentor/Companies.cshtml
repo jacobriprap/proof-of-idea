@@ -1,0 +1,51 @@
+﻿@using GroupM.CSE.ProofOfIdea.Models
+@using Microsoft.AspNet.Identity.Owin
+@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = ResourceLang.Companies;
+}
+
+<h1>@ViewBag.Title</h1>
+
+<div class="row">
+    <div class="col-md-12 container-fluid">
+        <div class="cseButtonSolidMd" style="width:100%;text-align:left">
+            <span class="">@ResourceLang.ListOfCompanies.ToUpper()</span>
+        </div>
+    </div>
+</div>
+<div>
+    @{
+        using (var db = new ApplicationDbContext())
+        {
+            string mentorUserId = User.Identity.GetUserId();
+            foreach (var dbCompany in db.Companies.Where(c => c.MentorId == mentorUserId))
+            {
+                int taskCompletedStatus = (int)(((float)dbCompany.Tasks.Where(t => t.ApprovedBy != null).Count() / dbCompany.Tasks.Count()) * 100);
+                int taskConfirmedStatus = (int)(((float)dbCompany.Tasks.Where(t => t.ConfirmedByMentor != null).Count() / dbCompany.Tasks.Count()) * 100);
+                                                   
+                string taskCompletedDescription = ResourceLang.TasksCompletedDescription;
+                string taskConfirmedDescription = ResourceLang.TasksConfirmedDescription;
+
+                <div class="row cseInputLine">
+                    <div class="col-sm-12 ">
+                        <div class="col-sm-4"><a href="/company/@dbCompany.Id">@dbCompany.Name <img src="~/Content/icons/caret_right.svg" height="10" width="10" /></a></div>
+                        <div class="col-sm-2"><a href="/company/@dbCompany.Id/tasks">@ResourceLang.Tasks <img src="~/Content/icons/caret_right.svg" height="10" width="10" /></a></div>
+                        <div class="col-sm-6">
+                            <a href="/company/@dbCompany.Id/tasks">
+                                <div style="background-color:#e1e1df;display:inline-block;width:90%;height:20px;position:relative">
+                                    <div style="width:@taskCompletedStatus%;background-color:#9e9e9e;height:inherit;position:absolute" title="@taskCompletedDescription">
+                                        <span class="sr-only">@(taskCompletedStatus)%</span>
+                                    </div>
+                                    <div style="width:@taskConfirmedStatus%;background-color:#81af69;height:inherit;position:absolute" title="@taskConfirmedDescription">
+                                        <span class="sr-only">@(taskConfirmedStatus)%</span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    }
+</div>

@@ -1,0 +1,31 @@
+﻿@using GroupM.CSE.ProofOfIdea.Models
+@using GroupM.CSE.ProofOfIdea
+@using Microsoft.AspNet.Identity.Owin
+@using Microsoft.AspNet.Identity
+@{
+    string userIdToShow = User.Identity.GetUserId();
+    ApplicationUser loggedInUser = null;
+    // check if logged in user is the same as the one requested
+    if (!String.IsNullOrWhiteSpace(ViewBag.UserId) && ViewBag.UserId != userIdToShow)
+    {
+        // Not the same user, so likely an admin looking on behalf of
+        // Find the requested user profile
+        userIdToShow = ViewBag.UserId;
+        loggedInUser = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().FindByName(User.Identity.Name);
+    }
+
+    // Get the current logged in user
+    ApplicationUser user = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(userIdToShow);
+    string userFriendlyName = (user != null && !String.IsNullOrWhiteSpace(user.FirstName) ? user.FirstName : User.Identity.Name);
+    ViewBag.Title = ResourceLang.Hello + " " + userFriendlyName;
+}
+
+<h1 style="font-size:4em;font-weight:bold"><a href="@Url.Action("Create","Mentor")">@ViewBag.Title</a></h1>
+<h5><a href="@Url.Action("Create","Mentor")">@ResourceLang.EditYourProfile</a></h5>
+
+@{
+    Html.RenderPartial("_CompanyBannerListing");
+    Html.RenderPartial("_ClusterBannerListing");
+}
+
+

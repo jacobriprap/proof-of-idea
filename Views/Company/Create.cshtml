@@ -1,0 +1,255 @@
+﻿@using GroupM.CSE.ProofOfIdea.Models
+@using Microsoft.AspNet.Identity.Owin
+@using Microsoft.AspNet.Identity
+@model CompanyViewModel
+@{
+    bool inEditCompanyMode = Model.Id > 0;
+    ViewBag.Title = inEditCompanyMode ? ResourceLang.CompanyEdit : ResourceLang.CreateCompany;
+    ApplicationUser currentUser = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().FindByName(User.Identity.Name);
+
+    // Cache company members for easier lookup
+    HashSet<string> companyMembers = Model != null && Model.Members != null ? new HashSet<string>(Model.Members) : new HashSet<string>();
+    // Cache company administrator or select current user if none
+    string companyAdministratorId = Model != null && !String.IsNullOrWhiteSpace(Model.AdministratorId) ? Model.AdministratorId : currentUser.Id;
+}
+@Scripts.Render("~/bundles/jquery")
+@section scripts{
+    <script>
+        function showFilePreview(event) {
+            var input = event.target;
+            console.log(event);
+
+            var reader = new FileReader();
+            reader.onload = function () {
+                if (reader.result && reader.result.toString().length > 11 && reader.result.toString().substring(0, 11) == 'data:image/') {
+                    var dataURL = reader.result;
+                    $("#profileImagePreview").attr('src', dataURL);
+                    $("#profileImagePreview").show();
+                }
+            };
+            reader.readAsDataURL(input.files[0]);
+        };
+
+        $(document).ready(function () {
+            $("#profileImageUrl").change(function (e) {
+                showFilePreview(e);
+            });
+            $("#profileImageUploadClickHandler").on("click", function (e) {
+                $("#profileImageUrl").trigger("click");
+                e.preventDefault();
+            });
+            $("#profileImageUrl").on("click", function (e) {
+                e.stopImmediatePropagation();
+            });
+        });
+
+        var config = {
+            '.chosen-select': {},
+            '.chosen-select-deselect': { allow_single_deselect: true },
+            '.chosen-select-no-single': { disable_search_threshold: 10 },
+            '.chosen-select-no-results': { no_results_text: 'Oops, nothing found!' },
+            '.chosen-select-width': { width: "100%" }
+        }
+        for (var selector in config) {
+            $(selector).chosen(config[selector]);
+        }
+    </script>
+}
+
+
+<h1>@ViewBag.Title</h1>
+
+<div class="row">
+    <span><img src="~/Content/icons/asterix.svg" width="16" height="16" /> @ResourceLang.FieldsRequired</span>
+    @using (Html.BeginForm("Create", "Company", new RouteValueDictionary() { { "CompanyId", Model.Id } }, FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+    {
+        Html.AntiForgeryToken();
+        Html.ValidationSummary(true, "These fields are required", new { @class = "text-danger" });
+        @Html.HiddenFor(m => m.Id);
+        <div class="col-md-8 container-fluid">
+            <div class="cseButtonSolidMd" style="width:100%;text-align:left">
+                <span class="">@ResourceLang.CompanyInfo.ToUpper()</span>
+            </div>
+            <div class="" style="width:100%;padding:20px">
+                <div class="form-group cseInputLine">
+                    @Html.LabelFor(m => m.Name, ResourceLang.CompanyName, new { @class = "control-label col-sm-3 text-left pull-left cseRequired" })
+                    <div class="col-sm-5 pull-right">
+                        @Html.TextBoxFor(m => m.Name, Model.Name ?? ResourceLang.WriteHere, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group cseInputLine">
+                    @Html.LabelFor(m => m.ProfileDescription, ResourceLang.CompanyProfile, new { @class = "control-label col-sm-3 text-left" })
+                    <div class="col-sm-5 pull-right">
+                        @Html.TextAreaFor(m => m.ProfileDescription, new { @class = "form-control", @value = Model.ProfileDescription ?? ResourceLang.WriteHere })
+                        @Html.ValidationMessageFor(m => m.ProfileDescription, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group cseInputLine">
+                    <div class="row">
+                        @Html.LabelFor(m => m.Members, ResourceLang.CompanyMembers, new { @class = "control-label col-sm-3 text-left" })
+                        <div class="col-sm-5 pull-right">
+                            <select class="chosen-select" multiple="multiple" id="Members" name="Members">
+                                @{
+                                    // Our current user as the admin
+                                    List<ApplicationUser> userList = new List<ApplicationUser>();
+                                    using (var db = new ApplicationDbContext())
+                                    {
+                                        var superAdminRole = db.Roles.FirstOrDefault(r => r.Name == "CSE_SuperAdmins");
+                                        var mentorRole = db.Roles.FirstOrDefault(r => r.Name == "CSE_Mentors");
+                                        userList.AddRange(db.Users.Where(u => !u.Roles.Any(r => r.RoleId == mentorRole.Id || r.RoleId == superAdminRole.Id) && u.Id != currentUser.Id));
+
+                                        foreach (var userSel in userList)
+                                        {
+                                            <option value="@userSel.Id" @(companyMembers.Contains(userSel.Id) ? "selected" : "")>
+                                                @userSel.Fullname
+                                            </option>
+                                        }
+                                    }
+
+                                    @Html.ValidationMessageFor(m => m.Members, "", new { @class = "text-danger" })
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        @Html.LabelFor(m => m.AdministratorId, ResourceLang.CompanyAdministrator, new { @class = "control-label col-sm-3 text-left" })
+                        <div class="col-sm-5 pull-right">
+                            <select class="chosen-select" id="AdministratorId" name="AdministratorId">
+                                @{
+                                    using (var db = new ApplicationDbContext())
+                                    {
+                                        foreach (var userSel in db.Users)
+                                        {
+                                            <option value="@userSel.Id" @(companyAdministratorId == userSel.Id ? "selected" : "")>
+                                                @userSel.Fullname
+                                            </option>
+                                        }
+                                    }
+                                }
+                            </select>
+                            @if (currentUser != null)
+                            {
+                            }
+                            else
+                            {
+                                <i>Error, Company administrator not available</i>
+                            }
+                            @Html.ValidationMessageFor(m => m.AdministratorId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group cseInputLine">
+                    @Html.LabelFor(m => m.Website, ResourceLang.CompanyWebsite, new { @class = "control-label col-sm-3 text-left" })
+                    <div class="col-sm-5 pull-right">
+                        @Html.TextBoxFor(m => m.Website, Model.Website ?? ResourceLang.WriteHere, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Website, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group cseInputLine">
+                    @Html.LabelFor(m => m.VATStatus, ResourceLang.CompanyCvrStatus, new { @class = "control-label col-sm-3 text-left" })
+                    <div class="col-sm-5 pull-right">
+                        @Html.EnumDropDownListFor(m => m.VATStatus, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.VATStatus, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group cseInputLine">
+                    @Html.LabelFor(m => m.VATNumber, ResourceLang.CompanyCvrStatus, new { @class = "control-label col-sm-3 text-left" })
+                    <div class="col-sm-5 pull-right">
+                        @Html.EnumDropDownListFor(m => m.VATNumber, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.VATNumber, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                @if (User.IsInRole("CSE_SuperAdmins") || User.IsInRole("CSE_Mentors"))
+                {
+                    <div class="form-group cseInputLine">
+                        @Html.LabelFor(m => m.Membership, ResourceLang.CompanyMembership, new { @class = "control-label col-sm-3 text-left" })
+                        <div class="col-sm-5 pull-right">
+                            @Html.TextBoxFor(m => m.Membership, Model.Membership ?? ResourceLang.WriteHere, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Membership, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                }
+                <div class="form-group cseInputLine">
+                    @Html.LabelFor(m => m.Place, ResourceLang.CompanyPlace, new { @class = "control-label col-sm-3 text-left" })
+                    <div class="col-sm-5 pull-right">
+                        @Html.EnumDropDownListFor(m => m.Place, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Place, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                @if (User.IsInRole("CSE_SuperAdmins") || User.IsInRole("CSE_Mentors"))
+                {
+                    <div class="form-group cseInputLine">
+                        @Html.LabelFor(m => m.Exit, ResourceLang.CompanyExit, new { @class = "control-label col-sm-3 text-left" })
+                        <div class="col-sm-5 pull-right">
+                            @Html.TextBoxFor(m => m.Exit, Model.Exit ?? ResourceLang.WriteHere, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Exit, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group cseInputLine">
+                        @Html.LabelFor(m => m.ExitBusiness, ResourceLang.CompanyExitBusiness, new { @class = "control-label col-sm-3 text-left" })
+                        <div class="col-sm-5 pull-right">
+                            @Html.TextBoxFor(m => m.ExitBusiness, Model.ExitBusiness ?? ResourceLang.WriteHere, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.ExitBusiness, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group cseInputLine">
+                        @Html.LabelFor(m => m.ExitScale, ResourceLang.CompanyExitScale, new { @class = "control-label col-sm-3 text-left" })
+                        <div class="col-sm-5 pull-right">
+                            @Html.TextBoxFor(m => m.ExitScale, Model.ExitScale ?? ResourceLang.WriteHere, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.ExitScale, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                }
+
+                <div class="form-group cseInputLine">
+                    @Html.LabelFor(m => m.ClusterId, ResourceLang.CompanyClusterItem, new { @class = "control-label col-sm-3 text-left" })
+                    <div class="col-sm-5 pull-right">
+                        @{
+                            SelectList selListClusters = null;
+                            using (var dbClusters = new ApplicationDbContext())
+                            {
+                                selListClusters = new SelectList(dbClusters.Clusters.Where(c => c.Name != null && c.Name.Length > 0).ToArray(), "Id", "Name");
+                            }
+                        }
+                        <div class="dropdown">
+                            @Html.DropDownListFor(m => m.ClusterId, selListClusters, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.ClusterId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                @if (User.IsInRole("CSE_SuperAdmins") || User.IsInRole("CSE_Mentors"))
+                {
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.MentorId, ResourceLang.CompanyMentor, new { @class = "control-label col-sm-3 text-left" })
+                        <div class="col-sm-5 pull-right">
+                            @{
+                                SelectList mentorSelList = null;
+
+                                using (var dbMentors = new ApplicationDbContext())
+                                {
+                                    mentorSelList = new SelectList(dbMentors.Users.Where(u => u.Mentor != null).ToArray(), "Id", "Fullname", Model.MentorId);
+                                }
+
+                                @Html.DropDownListFor(m => m.MentorId, mentorSelList, new { @class = "chosen-select" })
+                                @Html.ValidationMessageFor(m => m.MentorId, "", new { @class = "text-danger" })
+                            }
+                        </div>
+                    </div>
+                                }
+
+
+                <div class="form-group" style="padding-top:20px">
+                    <button type="submit" class="cseButtonSolidMd">@(inEditCompanyMode ? ResourceLang.CompanySave : ResourceLang.CompanyCreate.ToUpper())</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-offset-2 col-md-2 pull-right">
+            <a href="#" id="profileImageUploadClickHandler" class="center-block text-center cseBlueFrame thumbnail">
+                <img class="text-center" id="profileImagePreview" src="@(!String.IsNullOrWhiteSpace(Model.LogoUrl)?Model.LogoUrl:"/Content/Images/profileimage.png")" style="min-width:132px;min-height:132px;padding:16px" />
+                <input style="visibility:hidden;height:0;" name="profileImageUrl" id="profileImageUrl" accept="image/*" type="file" />
+            </a>
+        </div>
+                                }
+</div>

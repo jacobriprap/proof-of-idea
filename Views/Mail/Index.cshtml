@@ -1,0 +1,22 @@
+﻿@using GroupM.CSE.ProofOfIdea.Models
+@{
+    string currentView = ResourceLang.MailboxInbox;
+    ViewBag.Title = currentView;
+}
+
+<h1>@ViewBag.Title</h1>
+
+<div class="row">
+    <div class="col-sm-4">
+        <ul class="nav nav-pills nav-stacked">
+            <li role="presentation" class="@(currentView==ResourceLang.MailboxInbox?"active":"")"><a href="@Url.Action("Index")">@ResourceLang.MailboxInbox</a></li>
+            <li role="presentation" class="@(currentView==ResourceLang.MailboxSent?"active":"")"><a href="@Url.Action("Sent")">@ResourceLang.MailboxSent</a></li>
+            <li role="presentation" class="@(currentView==ResourceLang.MailboxDeleted?"active":"")"><a href="@Url.Action("Deleted")">@ResourceLang.MailboxDeleted</a></li>
+        </ul>
+    </div>
+    <div class="col-sm-8">
+        @{
+            Html.RenderPartial("_MailboxView",currentView);
+        }
+    </div>
+</div>

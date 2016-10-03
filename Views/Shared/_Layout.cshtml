@@ -1,0 +1,58 @@
+﻿@using GroupM.CSE.ProofOfIdea.Models
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - CSE POI</title>
+    <link rel="stylesheet" href="~/content/cse_styles.min.css">
+    @Styles.Render("~/Content/css")
+    <link rel="stylesheet" href="~/content/bootstrap-chosen.min.css">
+
+
+</head>
+<body style="padding-top:0px">
+    <div class="navbar navbar-inverse" style="background-color:#e1e1df;border-style:none">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/" style="line-height:5px"><span class="" style="color:#4869a6;font-size:2.5em">CSE<br /><span style="font-size:0.35em;">Entrepreneurship<br />in society</span></span></a>
+            </div>
+            <div class="navbar-collapse collapse">
+                @Html.Partial("_LoginPartial")
+                   
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+            <div style="margin-top:50px">
+                <h3 class="text-center cseGrey" style="font-weight:bold">@GroupM.CSE.ProofOfIdea.ResourceLang.CSEIPRPolicyTitle</h3>
+                <p class="text-center cseGrey">@GroupM.CSE.ProofOfIdea.ResourceLang.CSEIPRPolicyBody</p>
+                <footer style="width:100%;height:75px;background-color:#e1e1df;padding:10px;">Copyright 2015 - Copenhagen School of Entrepreneurship</footer>
+            </div>
+    </div>
+
+
+    
+    @*Include Signup dialog if not authenticated *@
+    @if (!Request.IsAuthenticated)
+    {
+        <div class="modal fade" id="diagSignup">
+            <div class="modal-dialog">
+                @Html.Partial("_UserSignupView", new ExternalLoginListViewModel { ReturnUrl = "/Profile/Create" })
+            </div>
+        </div>
+    }
+
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,36 @@
+﻿@using GroupM.CSE.ProofOfIdea.Models
+@model CompanyViewModel
+@{
+    ViewBag.Title = ResourceLang.Tasks;
+
+    bool poiIncomplete = false;
+    bool pocIncomplete = false;
+    using (var db = new ApplicationDbContext())
+    {
+        poiIncomplete = db.Companies.FirstOrDefault(c => c.Id == Model.Id).Tasks.Count(t => t.ConfirmedByMentor == null && t.Task.Area == TaskItem.TaskArea.POI) > 0;
+        pocIncomplete = db.Companies.FirstOrDefault(c => c.Id == Model.Id).Tasks.Count(t => t.ConfirmedByMentor == null && t.Task.Area == TaskItem.TaskArea.POC) > 0;
+    }
+}
+
+@using (Html.BeginForm("SubmitConfirmation", "Company", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    ViewBag.IsDisabled = false;
+    ViewBag.TaskTitle = @ResourceLang.POI.ToUpper();
+    ViewBag.CompanyId = Model.Id;
+    ViewBag.TaskArea = TaskItem.TaskArea.POI;
+    Html.RenderPartial("_TaskList");
+    
+    <p></p>
+    ViewBag.TaskTitle = @ResourceLang.POC.ToUpper();
+    ViewBag.CompanyId = Model.Id;
+    ViewBag.IsDisabled = poiIncomplete;
+    ViewBag.TaskArea = TaskItem.TaskArea.POC;
+    Html.RenderPartial("_TaskList");
+    <p></p>
+
+    ViewBag.TaskTitle = @ResourceLang.POB.ToUpper();
+    ViewBag.CompanyId = Model.Id;
+    ViewBag.IsDisabled = poiIncomplete || pocIncomplete;
+    ViewBag.TaskArea = TaskItem.TaskArea.POB;
+    Html.RenderPartial("_TaskList");
+}

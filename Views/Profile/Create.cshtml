@@ -1,0 +1,237 @@
+﻿@using GroupM.CSE.ProofOfIdea.Models
+@model UserProfile
+@{
+    ViewBag.Title = "Create Profile";
+    bool isEditing = Model != null && !String.IsNullOrWhiteSpace(Model.UserId);
+}
+@Scripts.Render("~/bundles/jquery")
+@section scripts
+{
+    <script>
+        function showFilePreview(event) {
+            var input = event.target;
+            console.log(event);
+
+            var reader = new FileReader();
+            reader.onload = function () {
+                if (reader.result && reader.result.toString().length > 11 && reader.result.toString().substring(0, 11) == 'data:image/') {
+                    var dataURL = reader.result;
+                    $("#profileImagePreview").attr('src', dataURL);
+                    $("#profileImagePreview").show();
+                }
+            };
+            reader.readAsDataURL(input.files[0]);
+        };
+
+        $(document).ready(function () {
+            $("#profileImageUrl").change(function (e) {
+                showFilePreview(e);
+            });
+            $("#profileImageUploadClickHandler").on("click", function (e) {
+                $("#profileImageUrl").trigger("click");
+                e.preventDefault();
+            });
+
+            $("#profileImageUrl").on("click", function (e) {
+                e.stopImmediatePropagation();
+            });
+
+            $("#DateOfBirth").datepicker("option", "dateFormat", "dd-mm-yy");
+            $("#DateOfBirth").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                minDate: "-100Y",
+                maxDate: "+1D",
+                yearRange: "c-100:c+10"
+            });
+
+            var config = {
+                '.chosen-select': {},
+                '.chosen-select-deselect': { allow_single_deselect: true },
+                '.chosen-select-no-single': { disable_search_threshold: 10 },
+                '.chosen-select-no-results': { no_results_text: 'Press enter to add' },
+                '.chosen-select-width': { width: "100%" }
+            }
+            for (var selector in config) {
+                $(selector).chosen(config[selector]);
+
+            }
+            var select, chosen;
+
+            // cache the select element as we'll be using it a few times
+            select = $(".chosen-select");
+
+            // init the chosen plugin
+            select.chosen();
+
+            // get the chosen object (any type, single or multiple)
+            chosen = $('.chosen-container');
+            // chosen = $('.chosen-select-single');
+            // chosen = $('.chosen-container-multi');
+
+
+            // TODO validate CVR Number
+            //$.validator.addMethod("validateCVRNO", function (value, element, params) {
+            //    console.log()
+
+            //    return $.isNumeric(value);
+            //});
+
+            //chosen.find("input").rules("add", {
+            //    rules: {               
+            //        previousStartupNameList: {
+            //            validateCVRNO
+            //        }
+            //    },
+            //    messages: {
+            //        previousStartupNameList: {
+                        
+            //        },
+            //        EndDate: {
+            //            required: "ErrorMessageEndDateRequired",
+            //            endDateGreaterThan: "ErrorMessageEndDateGreaterThanStartDate"
+            //        },
+            //        DiscountRate: {
+            //            required: "ErrorMessageDiscountRateRequired",
+            //            max: "Global.ErrorMessageDiscountRateRange",
+            //            min: "Global.ErrorMessageDiscountRateRange"
+            //        }
+            //    }
+            //}
+            //});
+
+            // Bind the keyup event to the search box input
+            chosen.find('input').keyup(function (e) {
+
+                if (e.which == 13) {
+
+                    var option = $("<option>").val(this.value).text(this.value);
+
+                    // add the new option
+                    select.prepend(option);
+                    // automatically select it
+                    select.find(option).prop('selected', true);
+                    // trigger the update
+                    select.trigger("chosen:updated");
+                }
+                // if we hit Enter and the results list is empty (no matches) add the option
+                //if (e.which == 13 && chosen.find('li.no-results').length > 0) {
+                //    var option = $("<option>").val(this.value).text(this.value);
+
+                //    // add the new option
+                //    select.prepend(option);
+                //    // automatically select it
+                //    select.find(option).prop('selected', true);
+                //    // trigger the update
+                //    select.trigger("chosen:updated");
+                //}
+            });
+        });
+    </script>
+}
+
+<div class="row">
+    <div class="cseRequired" style="width:10px;height:10px;display:inline-block"></div> <span>@ResourceLang.FieldsRequired</span>
+    @using (Html.BeginForm("Create", "Profile", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <div class="col-md-8 container-fluid">
+            <div class="cseButtonSolidMd" style="width:100%;text-align:left">
+                <span class="">@ResourceLang.ProfileInfo.ToUpper()</span>
+            </div>
+            <div class="cseLightGreyFrame" style="width:100%;padding:20px">
+                <div class="form-group cseInputLine">
+                    @Html.LabelFor(m => m.User.FirstName, ResourceLang.Name, new { @class = "col-md-2 control-label text-left cseRequired" })
+                    <div class="col-sm-4 col-sm-offset-2">
+                        @Html.TextBoxFor(m => m.User.FirstName, new { @class = "form-control", @placeholder = ResourceLang.FirstName })
+                        @Html.ValidationMessageFor(m => m.User.FirstName, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(m => m.User.LastName, new { @class = "form-control", @placeholder = ResourceLang.LastName })
+                        @Html.ValidationMessageFor(m => m.User.LastName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group cseInputLine">
+                    @Html.LabelFor(m => m.DateOfBirth, ResourceLang.DateOfBirth, new { @class = "col-md-2 control-label text-left cseRequired" })
+                    <div class="col-sm-4 pull-right">
+                        @Html.TextBoxFor(m => m.DateOfBirth, "{0:dd-MM-yyyy}", new { @class = "form-control", @placeholder = ResourceLang.DateOfBirthFormat })
+                        @Html.ValidationMessageFor(m => m.DateOfBirth, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class=" form-group ">
+                    @Html.LabelFor(m => m.CurrentOccupation, ResourceLang.CurrentOccupation, new { @class = "col-md-3 control-label text-left cseRequired" })
+                    <div class="col-sm-4 pull-right" style="padding:0px 25px 0px 10px;">
+                        @Html.EnumDropDownListFor(m => m.CurrentOccupation, new { @class = "col-md-2 form-control pull-right" })
+                        @Html.ValidationMessageFor(m => m.CurrentOccupation, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group cseInputLine">
+                    <div class=" col-sm-3 col-sm-offset-5">
+                        @Html.TextBoxFor(m => m.SchoolName, new { @class = "form-control", @placeholder = ResourceLang.SchoolName })
+                        @Html.ValidationMessageFor(m => m.SchoolName, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-sm-2">
+                        @Html.TextBoxFor(m => m.SchoolYearStart, new { @class = "form-control col-sm-2", @placeholder = ResourceLang.SchoolYearStart })
+                        @Html.ValidationMessageFor(m => m.SchoolYearStart, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-sm-2">
+                        @Html.TextBoxFor(m => m.SchoolYearEnd, new { @class = "form-control col-sm-2", @placeholder = ResourceLang.SchoolYearEnd })
+                        @Html.ValidationMessageFor(m => m.SchoolYearEnd, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group cseInputLine">
+                    @Html.LabelFor(m => m.PreviousStartupsCount, ResourceLang.PreviousStartups, new { @class = "col-md-4 control-label text-left" })
+                    <div class="col-sm-4 pull-right">
+                        <select class="chosen-select col-md-2 form-control" id="previousStartupNameList" name="previousStartupNameList" multiple="multiple">
+                            @{
+                                @*if (Model!=null&&Model.PreviousStartups != null && Model.PreviousStartups.Count() > 0)
+                                {
+                                    using (var db = new ApplicationDbContext())
+                                    {
+                                        foreach (string startupName in db.CompanyStartups.Select(cs => cs.Name).Distinct())
+                                        {
+                                            <option value="@startupName" @(Model.PreviousStartups.FirstOrDefault(ps=>ps.Name==startupName)!=null ? "selected" : "")>@startupName</option>
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    <option value="">Enter text and press enter to add</option>
+                                }*@
+                            }
+                        </select>
+
+                        @Html.ValidationMessageFor(m => m.PreviousStartupsCount, "", new { @class = "text-danger" })
+                    </div>
+                    @Html.Label(ResourceLang.PreviousStartupsText, new { @class = "col-md-12 control-label text-left" })
+                </div>
+            </div>
+            <div class="form-group" style="padding-top:20px">
+                @if (isEditing)
+                {
+                    <button type="submit" class="cseButtonSolidMd">@ResourceLang.CompanySave.ToUpper()</button>
+                }
+                else
+                {
+                    <button type="submit" class="cseButtonSolidMd">@ResourceLang.Continue.ToUpper()</button>
+                }
+            </div>
+            <div class="modal fade" id="diagCreateCompanyPrompt">
+                @if (!isEditing)
+                {
+                    <div class="modal-dialog">
+                        @Html.Partial("_CreateCompanyPrompt")
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="col-md-offset-2 col-md-2 pull-right">
+            <a href="#" id="profileImageUploadClickHandler" class="center-block text-center cseBlueFrame thumbnail">
+                <img class="text-center" id="profileImagePreview" src="@(Model!=null&&!String.IsNullOrWhiteSpace(Model.User.ImageUrl)?Model.User.ImageUrl:"/Content/Images/profileimage.png")" style=" min-width:132px;min-height:132px;padding:16px" />
+                <input style="visibility:hidden;height:0;" name="profileImageUrl" id="profileImageUrl" accept="image/*" type="file" />
+            </a>
+        </div>
+    }
+</div>

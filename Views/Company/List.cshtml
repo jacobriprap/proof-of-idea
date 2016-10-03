@@ -1,0 +1,64 @@
+﻿@using GroupM.CSE.ProofOfIdea.Models
+@{
+    ViewBag.Title = ResourceLang.AllCompanies.ToUpper();
+}
+
+<h1>@ViewBag.Title</h1>
+<div class="container">
+    <div class="row">
+        <div class="table-responsive">
+            <table class="table table-hover table-condensed">
+                <thead class="cseButtonSolidMd">
+                    <tr>
+                        <th></th>
+                        <th>@ResourceLang.CompanyName.ToUpper()</th>
+                        <th>@ResourceLang.Cluster</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @using (var db = new ApplicationDbContext())
+                    {
+                        if (db.Companies.Count() > 0)
+                        {
+                            foreach (var company in db.Companies)
+                            {
+                                <tr>
+                                    <td>
+                                        @if(!string.IsNullOrWhiteSpace(company.LogoUrl))
+                                        {
+                                            <img src="@company.LogoUrl" height="30"/>
+                                        }
+                                    </td>
+                                    <td><a href="/company/@company.Id">@company.Name &nbsp; <img height="12" src="~/Content/icons/caret_right.svg" /></a></td>
+                                    <td>
+                                        <span style="font-size:1.5em">
+                                            @if (company.Cluster != null && !String.IsNullOrWhiteSpace(company.Cluster.Name))
+                                            {
+                                                <a href="/cluster/?filter=@company.Cluster.Name">@company.Cluster.Name</a>
+                                            }
+                                            else
+                                            {
+                                                <i>@ResourceLang.ClusterNotSelected</i>
+                                            }
+                                        </span>
+                                </td>
+                            </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="3"><i>@ResourceLang.NoCompanies</i></td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+        @* 2015-11-13, IR: Pagination not enabled yet
+            <div class="col-md-12 text-center">
+                <ul class="pagination pagination-lg pager" id="myPager"></ul>
+            </div>
+        *@
+    </div>
+</div>

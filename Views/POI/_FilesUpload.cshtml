@@ -1,0 +1,22 @@
+﻿@using GroupM.CSE.ProofOfIdea.Models;
+
+@model AnswerAttachment
+
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            @using (Html.BeginForm("UploadFile", "POI", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+            {
+                <div class="modal-body">
+                    @Html.HiddenFor(x => x.ProposalAnswerId)
+                    <input id="fileUpload" name="fileUpload" type="file" />
+                </div>
+
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-default">Upload</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>

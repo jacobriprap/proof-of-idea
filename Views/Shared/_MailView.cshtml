@@ -1,0 +1,10 @@
+﻿@using GroupM.CSE.ProofOfIdea.Models
+@model CSEMessageViewModel
+<div class="row " style="padding:10px;width:100%;height:50px;background-color:#4869a6">
+    <span style="color:white">@Model.Subject</span>
+</div>
+<div class="row">
+    <div style="margin:10px">
+        @Html.Raw(Model.Body)
+    </div>
+</div>

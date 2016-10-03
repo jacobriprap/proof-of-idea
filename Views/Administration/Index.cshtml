@@ -1,0 +1,123 @@
+﻿@using Microsoft.AspNet.Identity
+@using Microsoft.AspNet.Identity.EntityFramework
+@using Microsoft.AspNet.Identity.Owin
+@using Microsoft.Owin.Security
+@using GroupM.CSE.ProofOfIdea.Models
+@{
+    ViewBag.Title = ResourceLang.CSEAdministrationPageHeader;
+
+    var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(ApplicationDbContext.Create()));
+}
+
+<h1>@ViewBag.Title</h1>
+<p class="cseBottomLine">@ResourceLang.CSEAdministrationPageBody</p>
+<div class="row">
+    <div class="col-xs-4">
+        <div class="panel panel-default">
+            <div class="panel-heading cseBlue">@ResourceLang.Companies</div>
+            <div class="panel-body">
+                <ul class="list-group">
+                    @try
+                    {
+                        int companyCount = 0;
+                        using (var db = new ApplicationDbContext())
+                        {
+                            foreach (var company in db.Companies)
+                            {
+                                <li class="list-group-item">
+                                    <a href="/Company/@company.Id">@company.Name
+                                    @if (company.Status == Company.CompanyStatus.Paused)
+                                    {
+                                        <span class="pull-right cseCompanyPaused">@ResourceLang.CompanyPaused.ToUpper()</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="pull-right cseCompanyActive">@ResourceLang.CompanyActive.ToUpper()</span>
+                                    }
+                                    </a>
+                                </li>
+                                companyCount++;
+                            }
+                        }
+                        if (companyCount == 0)
+                        {
+                            <i>@ResourceLang.CompanyListEmpty</i>
+                        }
+                    }
+                    catch (Exception except)
+                    {
+                        <span class="cseError">@ResourceLang.ErrorLoadingList</span>
+                    }
+                </ul>
+                <div class="text-center"><a href="/Company/Create/">@ResourceLang.CreateNewCompany</a></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-4">
+        <div class="panel panel-default">
+            <div class="panel-heading cseBlue">@ResourceLang.Mentors</div>
+            <div class="panel-body">
+                <ul class="list-group">
+                    @try
+                    {
+                        string mentorRoleId = roleManager.FindByName("CSE_Mentors").Id;
+
+                        int mentorCount = 0;
+                        using (var db = new ApplicationDbContext())
+                        {
+
+                            foreach (var userProfile in db.Users)
+                            {
+                                if (userProfile.Roles.FirstOrDefault(r => r.RoleId == mentorRoleId) != null) // Mentor role
+                                {
+                                    <li class="list-group-item"><a href="/Mentor/@userProfile.Id">@(userProfile.Profile != null ? userProfile.Fullname : userProfile.UserName)</a></li>
+                                    mentorCount++;
+                                }
+                            }
+                            if (mentorCount == 0)
+                            {
+                                <i>@ResourceLang.MentorListEmpty</i>
+                            }
+                        }
+                    }
+                    catch (Exception except)
+                    {
+                        <span class="cseError">@ResourceLang.ErrorLoadingList</span>
+                    }
+                </ul>
+                <div class="text-center"><a href="/Mentor/Create/">@ResourceLang.CreateNewMentor</a></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-4">
+        <div class="panel panel-default">
+            <div class="panel-heading cseBlue">@ResourceLang.Profiles</div>
+            <div class="panel-body">
+                <ul class="list-group">
+                    @try
+                    {
+                        int profileCount = 0;
+                        using (var db = new ApplicationDbContext())
+                        {
+                            foreach (var userProfile in db.Users)
+                            {
+
+                                <li class="list-group-item"><a href="/Profile/@userProfile.Id">@(userProfile.Profile != null ? userProfile.Fullname : userProfile.UserName)</a></li>
+                                profileCount++;
+                            }
+                            if (profileCount == 0)
+                            {
+                                <i>@ResourceLang.ProfileListEmpty</i>
+                            }
+                        }
+                    }
+                    catch (Exception except)
+                    {
+                        <span class="cseError">@ResourceLang.ErrorLoadingList</span>
+                    }
+                </ul>
+                <div class="text-center"><a href="/Profile/Create">@ResourceLang.CreateNewProfile</a></div>
+            </div>
+        </div>
+    </div>
+</div>

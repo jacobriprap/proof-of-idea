@@ -1,0 +1,9 @@
+﻿
+@{
+    ViewBag.Title = ResourceLang.Error;
+    ViewBag.ErrorMessage = ViewBag.ErrorMessage ?? "Missing error message";
+}
+
+<h2>@ViewBag.Title</h2>
+<p>@Html.Raw(ViewBag.ErrorMessage.Replace("\r\n", "<br>"))</p>
+

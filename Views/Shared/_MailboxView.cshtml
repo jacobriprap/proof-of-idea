@@ -1,0 +1,71 @@
+﻿@using Microsoft.AspNet.Identity
+@using Microsoft.AspNet.Identity.Owin
+@using GroupM.CSE.ProofOfIdea.Models
+@using (Html.BeginForm("Modify", "Mail", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    <div class="row " style="padding:10px;width:100%;height:50px;background-color:#4869a6">
+        <a href="/mail/new" class="" style="color:white;font-size:1.6em">@ResourceLang.New</a>
+        @if (Model == ResourceLang.MailboxInbox)
+        {
+            <button name="btnModify" id="btnModify" value="delete" class="pull-right" style="color:white;font-size:1.6em;background-color:#4869a6;border:none">@ResourceLang.Delete</button>
+        }
+    </div>
+
+    <table class="table table-hover table-condensed">
+        <thead class="">
+            <tr>
+                <th>@ResourceLang.Name</th>
+                <th>@ResourceLang.Subject</th>
+                <th>@ResourceLang.Date</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @using (var db = new ApplicationDbContext())
+            {
+                ApplicationUser curUser = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().FindByName(User.Identity.Name);
+                IEnumerable<CSEMessageItem> mailListFiltered;
+                if (Model == ResourceLang.MailboxSent)
+                {
+                    string userId = User.Identity.GetUserId();
+                    mailListFiltered = db.CSEMessageItems.Where(mmi => mmi.SenderId == userId);
+                }
+                else if (Model == ResourceLang.MailboxDeleted)
+                {
+                    mailListFiltered = curUser.CSEMessages.Where(mm => mm.DateDeleted != null);
+                }
+                else
+                { // For inbox
+                    mailListFiltered = curUser.CSEMessages.Where(mm => mm.DateDeleted == null);
+                }
+
+                if (mailListFiltered.Count() > 0)
+                {
+                    foreach (var mailMsg in mailListFiltered)
+                    {
+                        string fullName = mailMsg.Sender.FirstName + " " + mailMsg.Sender.LastName;
+                        if (String.IsNullOrWhiteSpace(fullName))
+                        {
+                            fullName = mailMsg.Sender.UserName;
+                        }
+                        string dateSent = mailMsg.DateSent.Value.ToShortTimeString() + " " + mailMsg.DateSent.Value.ToShortDateString();
+                        string mailFormatting = mailMsg.DateRead == null && mailMsg.Sender.UserName != User.Identity.Name ? "cseUnreadMail" : "cseReadMail";
+
+                        <tr>
+                            <td align="left"><a class="@mailFormatting" href="/mail/@(Model)?id=@mailMsg.Id">@fullName</a></td>
+                            <td align="left"><a class="@mailFormatting" href="/mail/@(Model)?id=@mailMsg.Id">@mailMsg.Message.Subject</a></td>
+                            <td align="left"><a class="@mailFormatting" href="/mail/@(Model)?id=@mailMsg.Id">@dateSent</a></td>
+                            <td align="center"><span class="@mailFormatting"><input type="checkbox" name="modifySelectedList" value="@mailMsg.Id" /></span></td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="3" align="center"><i>@ResourceLang.MailboxEmpty</i></td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+}

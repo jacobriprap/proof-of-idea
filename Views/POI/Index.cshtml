@@ -1,0 +1,687 @@
+﻿@using Microsoft.AspNet.Identity.Owin
+@using Microsoft.AspNet.Identity
+@using GroupM.CSE.ProofOfIdea.Models
+
+@model POIViewModel
+@{
+    ViewBag.Title = ResourceLang.ProofOfIdea.ToUpper();
+}
+@section scripts
+{
+    <script src="~/scripts/tinymce/tinymce.min.js"></script>
+    <!-- Script to wire up your TinyMCE editor -->
+    <script type="text/javascript">
+        // Initialize your tinyMCE Editor with your preferred options
+        tinymce.init({
+            selector: "textarea",
+            menubar: false,
+            statusbar: false,
+            resize: false,
+            toolbar: 'bold italic underline numlist bullist alignleft aligncenter aligncenter link'
+        });
+
+        $("#version-dropdownlist option").click(function () {
+            var url = '@Url.Action("Details", "Branch", new { id = "__id__" })';
+        });
+    </script>
+}
+
+<h1>@ViewBag.Title</h1>
+
+<div class="row">
+    <div class="col-md-12" style="font-size: 1.5em;">
+
+        <select id="version-dropdownlist" style="border: none;">
+            @foreach (var businessProposal in @Model.BusinessProposals)
+            {
+                if (Model.BusinessProposals.ElementAt(0).Version == businessProposal.Version)
+                {
+                    <option value="@businessProposal.Version" href="">@ResourceLang.BusinessProposalVersion.ToLower() @businessProposal.Version @ResourceLang.BusinessProposalLatestVersion</option>
+                }
+                else
+                {
+                    <option value="@businessProposal.Version">@ResourceLang.BusinessProposalVersion.ToLower() @businessProposal.Version</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="col-md-12" style="font-size: 1.5em;">
+        @ResourceLang.BusinessProposalStatus: <span style="color:#81af69;">@(Model.BusinessProposal.Status == BusinessProposal.ProposalStatus.Open ? ResourceLang.BusinessProposalOpen.ToUpper() : ResourceLang.BusinessProposalClose.ToLower())</span>
+    </div>
+</div>
+
+<div class="row">
+    @using (Html.BeginForm("Action", "POI", new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <div class="col-md-offset-1 col-md-10 container-fluid">
+            @Html.Hidden("QuestionNo", 1)
+            <div class="col-md-12">
+                <h2>What's the working title of your idea/company?</h2>
+                @Html.TextArea("Body", new { @class = "cseBlueFrame", @placeholder = @ResourceLang.NewEmailBody, @style = "border-style:none;font-size:1.5em;width:100%", @rows = "6", @cols = "2" })
+
+                <div class="cseBottomBar">
+                    <p class="cseTextBoxLocked pull-left">Christian is typing in this field</p>
+                    <div class="pull-right">
+                        <button class="cseButtonFrame">Edit</button>
+                        <button class="cseButtonFrame">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="row">
+    @using (Html.BeginForm("Create", "POI", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <div class="col-md-offset-1 col-md-10 container-fluid">
+            <div class="col-md-12">
+                <h2>Who's on the team?</h2>
+                <p>Please list by bullets the team members name, title and email address.</p>
+                <p>And please write a brief introduction to each of members experience: What is their role in the team and what is their experience with starting business and/or working with ideas in general.</p>
+                @Html.TextArea("Question", new { @class = "cseBlueFrame", @placeholder = @ResourceLang.NewEmailBody, @style = "border-style:none;font-size:1.5em;width:100%", @rows = "6", @cols = "2" })
+
+                <div class="cseBottomBar">
+                    <p class="cseTextBoxLocked pull-left">Christian is typing in this field</p>
+                    <div class="pull-right">
+                        <button class="cseButtonFrame">Edit</button>
+                        <button class="cseButtonFrame">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="row">
+    @using (Html.BeginForm("Create", "POI", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <div class="col-md-offset-1 col-md-10 container-fluid">
+            <div class="col-md-12">
+                <h2>What's your idea?</h2>
+                <p>This is the <i>pitch</i> - that is, a super short description of your idea. It is often referred to as an elevator pitch as you should be able to deliver the pitch in the time it takes to ride an elevator from the ground to the investors on the top floor. The pitch is one of the most important tools of an entrepreneur - you never know who you may run into at work, at a reception or in the supermarket, so your pitch should always be sharp.</p>
+                <p>Your pitch should be a precise and intriguing summary compiled of your answers to the following questions: What's the problem/need? What's the solution? Who will it help? How can we make money? And what do we need in order to move forward?</p>
+                <p>Start out by discussing these questions in your team or with friends. You can always return to your pitch and make it even sharper.</p>
+                <p>When you have finished your pitch - try it out on 5 people from your network, who can give you valuable feedback - what works and what dosen't? Note their feedback and incorporate this into your pitch. Remember- your pitch should be as short and simple so everybody can understand it.</p>
+                @Html.TextArea("Question", new { @class = "cseBlueFrame", @placeholder = @ResourceLang.NewEmailBody, @style = "border-style:none;font-size:1.5em;width:100%", @rows = "6", @cols = "2" })
+
+                <div class="cseBottomBar">
+                    <p class="cseTextBoxLocked pull-left">Christian is typing in this field</p>
+                    <div class="pull-right">
+                        <button class="cseButtonFrame">Edit</button>
+                        <button class="cseButtonFrame">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="row">
+    @using (Html.BeginForm("Create", "POI", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <div class="col-md-offset-1 col-md-10 container-fluid">
+            <div class="col-md-12">
+                <h2>How will pitch the idea between two floors?</h2>
+
+                <p>In the previous question your described the idea as an <i>elevator pitch</i>. Now let's assume that you have only two floors to go in the elevator to pitch the idea. How will you the idea in max. 150 characters?</p>
+                <p>The elevator pitch should cover the basics, not necessarily in this order: What, who and why.</p>
+                <p><strong>WHAT</strong>. Describe what are you doing - are you making a product or offering a service? <br />-> "We make widgets widget for..."</p>
+                <p><strong>WHO</strong>. Describe the customer (be specific enough that people see the market, but not so specific that people wonder if there are more than of these people in the world): <br />-> "We make widgets for recreational widgeteers..."</p>
+                <p><strong>WHY</strong>. Describe why you are special. What will differentiate from competitors in the market? <br />-> "We're the first company for recreational widgeteers" or "We make widgets for recreational widgeteers that are half the price and fly twice the distance of current widgets"</p>
+                <h4>A FEW ADVICES:</h4>
+                <p><strong>Avoid the technical jargon</strong>. The idea is for someone to respond with "That's interesting, tell me more." Then you can add technical jargon and explain your advantages.</p>
+                <p><strong>Avoid the sales pitch</strong>. The elevator pitch is for explaining what you are doing and initiating an conversation. Don't use it to sell your product or for that matter your company.</p>
+                @Html.TextArea("Question", new { @class = "cseBlueFrame", @placeholder = @ResourceLang.NewEmailBody, @style = "border-style:none;font-size:1.5em;width:100%", @rows = "6", @cols = "2" })
+
+                <div class="cseBottomBar">
+                    <p class="cseTextBoxLocked pull-left">Christian is typing in this field</p>
+                    <div class="pull-right">
+                        <button class="cseButtonFrame">Edit</button>
+                        <button class="cseButtonFrame">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="row">
+    @using (Html.BeginForm("Create", "POI", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <div class="col-md-offset-1 col-md-10 container-fluid">
+            <div class="col-md-12">
+                <h2>What's the problem you wish to solve?</h2>
+
+                <p>Here, you must define the customer pain that drives your idea - what customer problem, need, or what does your idea address? It is key that you nail the customer pain as it determines whether your idea is a 'nice to have' or 'need to have'. Futher, when you have identified the customer pain, it is a lot easier to evaluate which solution will actually relief the customer's pain.</p>
+                <p>If you are in doubt whether you have nailed the customer pain, it can be helpful to take a picture that depicts a situation, in which a customer is feeling the related pain.</p>
+
+                @Html.TextArea("Question", new { @class = "cseBlueFrame", @placeholder = @ResourceLang.NewEmailBody, @style = "border-style:none;font-size:1.5em;width:100%", @rows = "6", @cols = "2" })
+
+                <div class="cseBottomBar">
+                    <p class="cseTextBoxLocked pull-left">Christian is typing in this field</p>
+                    <div class="pull-right">
+                        <button class="cseButtonFrame">Edit</button>
+                        <button class="cseButtonFrame">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="row">
+    @using (Html.BeginForm("Create", "POI", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <div class="col-md-offset-1 col-md-10 container-fluid">
+            <div class="col-md-12">
+                <h2>How do people describe that they have this problem?</h2>
+
+                <p>Often, we have a tendency to use ourselves as point of departure in assessing the demand for a certain idea - 'I want this, therefore many others must want it to'. However, it is very information to find out how - and if - people experience that they have a problem. This is a good test to see whether the problem actually exists in the real world, and not just in yours.</p>
+                <p>Ask 3 people in your network if, how, and when they experience the problem that you wish to solve.</p>
+
+                @Html.TextArea("Question", new { @class = "cseBlueFrame", @placeholder = @ResourceLang.NewEmailBody, @style = "border-style:none;font-size:1.5em;width:100%", @rows = "6", @cols = "2" })
+
+                <div class="cseBottomBar">
+                    <p class="cseTextBoxLocked pull-left">Christian is typing in this field</p>
+                    <div class="pull-right">
+                        <button class="cseButtonFrame">Edit</button>
+                        <button class="cseButtonFrame">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="row">
+    @using (Html.BeginForm("Create", "POI", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <div class="col-md-offset-1 col-md-10 container-fluid">
+            <div class="col-md-12">
+                <h2>How will you solve the problem?</h2>
+
+                <p>Here you describe the service or product that will solve the identified customer problem or satisfy the identified customer need.</p>
+                <p>Present the solution to the 3 people - get feedback from these; will your solution solve their problem or satisfy their need? Be aware that you will probably have to come back to this question during the process of answering the following questions - you have to use all the information you get to sharpen your solution and value proposition.</p>
+
+                @Html.TextArea("Question", new { @class = "cseBlueFrame", @placeholder = @ResourceLang.NewEmailBody, @style = "border-style:none;font-size:1.5em;width:100%", @rows = "6", @cols = "2" })
+
+                <div class="cseBottomBar">
+                    <p class="cseTextBoxLocked pull-left">Christian is typing in this field</p>
+                    <div class="pull-right">
+                        <button class="cseButtonFrame">Edit</button>
+                        <button class="cseButtonFrame">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="row">
+    @using (Html.BeginForm("Create", "POI", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <div class="col-md-offset-1 col-md-10 container-fluid">
+            <div class="col-md-12">
+                <h2>What are the key features of your solution?</h2>
+
+                <p>All products and service have key features - here, you should describe the most important features that in your mind will make your solution unique; the key features may be technological, physical, mental, emotional etc.</p>
+                <p>Compile a list of the potential key features of your products/service and try to describe these. Consider going back to the customers at the point and ask them whether the key features, you have identified, are also the key features in their perspective. Be aware, that the customers know what will give the largest value in the end, but most likely, they will give you valuable input about how to market your solution.</p>
+
+                @Html.TextArea("Question", new { @class = "cseBlueFrame", @placeholder = @ResourceLang.NewEmailBody, @style = "border-style:none;font-size:1.5em;width:100%", @rows = "6", @cols = "2" })
+
+                <div class="cseBottomBar">
+                    <p class="cseTextBoxLocked pull-left">Christian is typing in this field</p>
+                    <div class="pull-right">
+                        <button class="cseButtonFrame">Edit</button>
+                        <button class="cseButtonFrame">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="row">
+    @using (Html.BeginForm("Create", "POI", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <div class="col-md-offset-1 col-md-10 container-fluid">
+            <div class="col-md-12">
+                <h2>What does it take to enable theses key features?</h2>
+
+                <p>It is imperative that you have an idea of how to develop or integrate the key features that are the cornerstone of your idea. Remember - you do not have to be able to develop the features yourselves, but you have to consider which competences, means, and resources that are necessary.</p>
+                <p>Take the list of the key features that your solution will entail and consider what it takes to develop these features. If you are in doubt of what it takes - scan your network for people who have knowledge within the domain of your idea. Ask at least 1 person for a short meeting at which you can pick his/her brain about what it takes to develop or integrate the features.</p>
+
+                @Html.TextArea("Question", new { @class = "cseBlueFrame", @placeholder = @ResourceLang.NewEmailBody, @style = "border-style:none;font-size:1.5em;width:100%", @rows = "6", @cols = "2" })
+
+                <div class="cseBottomBar">
+                    <p class="cseTextBoxLocked pull-left">Christian is typing in this field</p>
+                    <div class="pull-right">
+                        <button class="cseButtonFrame">Edit</button>
+                        <button class="cseButtonFrame">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="row">
+    @using (Html.BeginForm("Create", "POI", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <div class="col-md-offset-1 col-md-10 container-fluid">
+            <div class="col-md-12">
+                <h2>Who are your customers?</h2>
+
+                <p>Customers comprise the heart of any business idea - without customers/users, no idea can survive for long. It is important that you consider who your customers are.</p>
+                <p>When defining your customer, you should consider various characteristics such as demographics, geographies, disposable income etc.</p><br />
+                <p>Descibe 3 dream customers - who are they, where do they live, how much money do they have, what is their pain, and what is their gain by means of your solution?</p>
+                <p>In this process, you should consider, whether there are different customers segement that you can cater with your idea - if so, consider whether the different customer segement should be offered the exact same solution.</p>
+                <p>Make a list of at least 5 potential customers (leads) - the list must consist of companies (B2B) or persons (B2C) that you know of by means of your network. At this point, you do not have to have had contact to any of them - but it is important that you consider who might become customers now and in the future.</p>
+
+                @Html.TextArea("Question", new { @class = "cseBlueFrame", @placeholder = @ResourceLang.NewEmailBody, @style = "border-style:none;font-size:1.5em;width:100%", @rows = "6", @cols = "2" })
+
+                <div class="cseBottomBar">
+                    <p class="cseTextBoxLocked pull-left">Christian is typing in this field</p>
+                    <div class="pull-right">
+                        <button class="cseButtonFrame">Edit</button>
+                        <button class="cseButtonFrame">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="row">
+    @using (Html.BeginForm("Create", "POI", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <div class="col-md-offset-1 col-md-10 container-fluid">
+            <div class="col-md-12">
+                <h2>How will you describe the solution to customers?</h2>
+
+                <p>If you do not have a product, it can be good to have physical aid to describe your idea to potential customers - an example of such is the mockups used in web- and app-development. You should consider which aid you need in order to show and describe your idea to customers - and reap the benefits of their early feedback.</p>
+                <p>Do a small sketch, silde deck, prototype, mockup or whatever feels the best for you; it does not have to be fancy or in its final form; there are plenty of time for optimization. The most important thing is that you try to develop an aid that can help you make your customers understand, try out or see your idea.</p>
+
+                @Html.TextArea("Question", new { @class = "cseBlueFrame", @placeholder = @ResourceLang.NewEmailBody, @style = "border-style:none;font-size:1.5em;width:100%", @rows = "6", @cols = "2" })
+
+                <div class="cseBottomBar">
+                    <p class="cseTextBoxLocked pull-left">Christian is typing in this field</p>
+                    <div class="pull-right">
+                        <button class="cseButtonFrame">Edit</button>
+                        <button class="cseButtonFrame">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="row">
+    @using (Html.BeginForm("Create", "POI", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <div class="col-md-offset-1 col-md-10 container-fluid">
+            <div class="col-md-12">
+                <h2>How do you potential customers react to the idea?</h2>
+
+                <p>When you have made your first run 'mockup' of your idea, it's important that you take note of how customers react to it, use it, and express their relief to the pain.</p>
+                <p>Identify 3 people in your network, who can give you valuable feedback to your "mockup" - note their feedback and incorporate it into the mockup. Be aware of the valuable information that this action may give you about the overall features of your solution - you may have to revise elements of your solution.</p>
+
+                @Html.TextArea("Question", new { @class = "cseBlueFrame", @placeholder = @ResourceLang.NewEmailBody, @style = "border-style:none;font-size:1.5em;width:100%", @rows = "6", @cols = "2" })
+
+                <div class="cseBottomBar">
+                    <p class="cseTextBoxLocked pull-left">Christian is typing in this field</p>
+                    <div class="pull-right">
+                        <button class="cseButtonFrame">Edit</button>
+                        <button class="cseButtonFrame">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="row">
+    @using (Html.BeginForm("Create", "POI", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <div class="col-md-offset-1 col-md-10 container-fluid">
+            <div class="col-md-12">
+                <h2>Which similar solutions are there in your market?</h2>
+
+                <p>Here, you want to get information about your potential competitors - meaning, who is currently satisfying or solving the problem that your idea is aiming to solve. When thinking about similar solutions in the market, is it also important to consider the subsitutes to your product or service. For example, margarine is a substitute for butter because a consumer can meet similar needs by using margarine.</p>
+                <p>Start out by doing a small-scale market research - often a Google search can be a sufficient place to start to identify potential competitors. Search for similar solutions to your problem. Identify both direct competitors and substitutes to your product or service. This will give you a better understanding of that alternatives your customers are considering before buying your product or service.</p>
+
+                @Html.TextArea("Question", new { @class = "cseBlueFrame", @placeholder = @ResourceLang.NewEmailBody, @style = "border-style:none;font-size:1.5em;width:100%", @rows = "6", @cols = "2" })
+
+                <div class="cseBottomBar">
+                    <p class="cseTextBoxLocked pull-left">Christian is typing in this field</p>
+                    <div class="pull-right">
+                        <button class="cseButtonFrame">Edit</button>
+                        <button class="cseButtonFrame">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="row">
+    @using (Html.BeginForm("Create", "POI", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <div class="col-md-offset-1 col-md-10 container-fluid">
+            <div class="col-md-12">
+                <h2>How is your solution better than existing ones?</h2>
+
+                <p>You have already identified your competitors. Now, take it a step further, and understand how your solution differs from the solutions of your competitors.</p>
+                <p>This is referred to as the unique selling points of your solution. Unique selling points may be expressed as a summary of what you do and how you do it better or differently than others. Often, it can be summed up in just a few words that become something of a catch-phrase. No matter how you express it, your unique selling point should focus on how it benefits the customer.</p> <br />
+                <p>This step demands some research on your competitors' products/services and their unique selling points. How does your solution differ from the solutions offered by competitors? To answer this you can start by investigating these questions (focus on one company at a time):</p>
+                <p>What are your competitors doing really well? What are your competitors doing poorly?</p>
+                <p>Use your findings to try and benchmark your idea against your biggest competitors.</p>
+                <p>Maybe you can be inspired by what they are doing really well and improve on what they are doing poorly. This will make you sharper on your unique selling points.</p>
+
+                @Html.TextArea("Question", new { @class = "cseBlueFrame", @placeholder = @ResourceLang.NewEmailBody, @style = "border-style:none;font-size:1.5em;width:100%", @rows = "6", @cols = "2" })
+
+                <div class="cseBottomBar">
+                    <p class="cseTextBoxLocked pull-left">Christian is typing in this field</p>
+                    <div class="pull-right">
+                        <button class="cseButtonFrame">Edit</button>
+                        <button class="cseButtonFrame">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="row">
+    @using (Html.BeginForm("Create", "POI", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <div class="col-md-offset-1 col-md-10 container-fluid">
+            <div class="col-md-12">
+                <h2>Where's the busniess - how will you make money?</h2>
+
+                <p>A steady income is a necessity for all companies that want to survive - therefore, you must ask yourself how your solution can be secure revenue streams to keep you idea alive. There are several ways to generate revenue streams - e.g. by usage fee, lending/renting/leasing, licensing, ownership, advertising etc...</p>
+                <p>Consider what kind of revenue streams that match your solution and your customer segements. Also consider: What value are your customers actually willing to pay for solution? Further down the line, you should also consider elements of customer buying behavior - how would customers prefer paying for your solution?</p>
+
+                @Html.TextArea("Question", new { @class = "cseBlueFrame", @placeholder = @ResourceLang.NewEmailBody, @style = "border-style:none;font-size:1.5em;width:100%", @rows = "6", @cols = "2" })
+
+                <div class="cseBottomBar">
+                    <p class="cseTextBoxLocked pull-left">Christian is typing in this field</p>
+                    <div class="pull-right">
+                        <button class="cseButtonFrame">Edit</button>
+                        <button class="cseButtonFrame">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="row">
+    @using (Html.BeginForm("Create", "POI", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <div class="col-md-offset-1 col-md-10 container-fluid">
+            <div class="col-md-12">
+                <h2>If needed - how can you attract means to start?</h2>
+
+                <p>Most entrepreneurs need some amount of money to test their idea - if so, consider how you can attract the money to get started and develop a showcase. You can consider an investor/busniess angel or alternatives, such as borrowing money in the bank or from family and friends. If you already know that you will need more funding down the line, keep in mind that busniess angels and venture capitalists prefer to have as few shareholders as possible, when investing in your business</p>
+                <p>Discuss among your team what your capital requirements are - how much money do you need to test your idea or make a showcase? Secondly, consider alternative channels for capital - e.g. you might be able to get founding from innovation societies, EU funds, start up loans, business plan competitions and so on.</p>
+
+                @Html.TextArea("Question", new { @class = "cseBlueFrame", @placeholder = @ResourceLang.NewEmailBody, @style = "border-style:none;font-size:1.5em;width:100%", @rows = "6", @cols = "2" })
+
+                <div class="cseBottomBar">
+                    <p class="cseTextBoxLocked pull-left">Christian is typing in this field</p>
+                    <div class="pull-right">
+                        <button class="cseButtonFrame">Edit</button>
+                        <button class="cseButtonFrame">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="row">
+    @using (Html.BeginForm("Create", "POI", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <div class="col-md-offset-1 col-md-10 container-fluid">
+            <div class="col-md-12">
+                <h2>In best case, how far can you take the business?</h2>
+
+                <p>If you are looking to get investments or have the ambitions to take your idea to a higher business level, it is important that you consider the scalability and internationalization of your idea as this is a pivotal point for investors.</p>
+                <p>Discuss in your team what you what to achieve with this business. Describe your dream scenario in 3 lines. Where is business in 2 years?</p>
+
+                @Html.TextArea("Question", new { @class = "cseBlueFrame", @placeholder = @ResourceLang.NewEmailBody, @style = "border-style:none;font-size:1.5em;width:100%", @rows = "6", @cols = "2" })
+
+                <div class="cseBottomBar">
+                    <p class="cseTextBoxLocked pull-left">Christian is typing in this field</p>
+                    <div class="pull-right">
+                        <button class="cseButtonFrame">Edit</button>
+                        <button class="cseButtonFrame">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="row">
+    @using (Html.BeginForm("Create", "POI", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <div class="col-md-offset-1 col-md-10 container-fluid">
+            <div class="col-md-12">
+                <h2>What's the dream team?</h2>
+
+                <p>It is a common understanding within entrepreneurship that the team is at least as important as the quality of the idea - therefore, you should spend some time to consider how you can create a rockstar team.</p><br />
+                <p>In relation to the solution and the key features you are providing, consider which competences, roles and job functions that ideally should be onboard your team.</p>
+                <p>Now consider who's already on your team by mapping the individual competenices, roles and job functions of your team. Compare these findings to the dream team you outlined above - are any skills, competenices, roles or job functions missing in your current team? If yes, think about your network and consider - who may be able to help you attact commitment from candidates to fulfill the dream team?</p>
+                <p>As an addition, you should also consider the possibilities that originate from the resources and means at hand in your team - how can you shape your idea in order to exploit the benefits of who you are, what you know, and whom you know?</p>
+
+                @Html.TextArea("Question", new { @class = "cseBlueFrame", @placeholder = @ResourceLang.NewEmailBody, @style = "border-style:none;font-size:1.5em;width:100%", @rows = "6", @cols = "2" })
+
+                <div class="cseBottomBar">
+                    <p class="cseTextBoxLocked pull-left">Christian is typing in this field</p>
+                    <div class="pull-right">
+                        <button class="cseButtonFrame">Edit</button>
+                        <button class="cseButtonFrame">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="row">
+    @using (Html.BeginForm("Create", "POI", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <div class="col-md-offset-1 col-md-10 container-fluid">
+            <div class="col-md-12">
+                <h2>Which partnerships should you engage in?</h2>
+
+                <p>In order to make your idea come true, you may need to engage in partnership and these can become a cornerstone of providing your solution. The incentive for engaging in partnerships can be various, e.g. optimization and economies of scale, reduction of risk, and acquisition of particular resources and activities (e.g. distribution or production).</p><br />
+                <p>Firstly - consider which types of partners you need in order to fulfill your idea and offer you solution?</p>
+                <p>Secondly, take a glance at the your outline of your dream team - are there any of the roles on your dream team that perhaps could be a external partner instead of a partner in the team?</p>
+                <p>Thirdly, identify at least 3 network contacts who may be a potential partner - or a lead to a potential partner. Now, consider how you can establish as early commitment from potential partners.</p>
+
+                @Html.TextArea("Question", new { @class = "cseBlueFrame", @placeholder = @ResourceLang.NewEmailBody, @style = "border-style:none;font-size:1.5em;width:100%", @rows = "6", @cols = "2" })
+
+                <div class="cseBottomBar">
+                    <p class="cseTextBoxLocked pull-left">Christian is typing in this field</p>
+                    <div class="pull-right">
+                        <button class="cseButtonFrame">Edit</button>
+                        <button class="cseButtonFrame">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="row">
+    @using (Html.BeginForm("Create", "POI", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <div class="col-md-offset-1 col-md-10 container-fluid">
+            <div class="col-md-12">
+                <h2>When is the best time to kickstart this idea - and why?</h2>
+
+                <p>Often the expression window of opportunity is used in relation to new ventures and innovation. This is a good thing to consider when working at the early stages with ideas - is this the best time to work on this idea and try to bring it to market? There can be both contextual consideration as well as internal considerations to make.</p><br />
+                <p>Consider the context of your idea: are there any conditions that might influence your idea if you try it out now versus in a couple of months - this can be conditions relating to issues such as technology, demographics, legislation etc.</p>
+                <p>Consider the internal conditions of your team: do you have the time and resources to work on this idea? It can be very proactive to match your expectations within the team about the resources you expect to put into the idea.</p>
+
+                @Html.TextArea("Question", new { @class = "cseBlueFrame", @placeholder = @ResourceLang.NewEmailBody, @style = "border-style:none;font-size:1.5em;width:100%", @rows = "6", @cols = "2" })
+
+                <div class="cseBottomBar">
+                    <p class="cseTextBoxLocked pull-left">Christian is typing in this field</p>
+                    <div class="pull-right">
+                        <button class="cseButtonFrame">Edit</button>
+                        <button class="cseButtonFrame">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="row">
+    @using (Html.BeginForm("Create", "POI", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <div class="col-md-offset-1 col-md-10 container-fluid">
+            <div class="col-md-12">
+                <h2>Why whould it not be a success - the main 3 challenges?</h2>
+
+                <p>You cannot predict the future and there is no reason to attempt to. However, you can think about some of the challenges that may be in the way of the success of your idea - and consider what you can do today to proactive affect these challenges.</p><br />
+                <p>Firstly, make a short list of the challenges there may stand in the way of your idea. Secondly, go over the challenges and sort them in 2 different categories: (1) the ones you can do something about, (2) the ones you cannot do anything about.</p>
+
+
+                @Html.TextArea("Question", new { @class = "cseBlueFrame", @placeholder = @ResourceLang.NewEmailBody, @style = "border-style:none;font-size:1.5em;width:100%", @rows = "6", @cols = "2" })
+
+                <div class="cseBottomBar">
+                    <p class="cseTextBoxLocked pull-left">Christian is typing in this field</p>
+                    <div class="pull-right">
+                        <button class="cseButtonFrame">Edit</button>
+                        <button class="cseButtonFrame">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="row">
+    @using (Html.BeginForm("Create", "POI", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <div class="col-md-offset-1 col-md-10 container-fluid">
+            <div class="col-md-12">
+                <h2>How will you approach the potential challenges?</h2>
+
+                <p>Sometime life hands us lemons, and we have to come up with a way to make lemonade - consider how you might be able to tackle the challenges proactively.</p><br />
+                <p>Return to you categorized list of potential challenges - now, it's time to act! Firstly, you should select two items on the list of challenges that you have the power to affect proactively (category 1), and find various ways to approach these potential challenges in  a postive manner.</p>
+                <p>Secondly, you should try hard to come to peace with the potential challenges, which you cannot affect yourselves (category 2) and relocate your focus to "the next best thing" that you can do in order to make your idea successful.</p>
+
+                @Html.TextArea("Question", new { @class = "cseBlueFrame", @placeholder = @ResourceLang.NewEmailBody, @style = "border-style:none;font-size:1.5em;width:100%", @rows = "6", @cols = "2" })
+
+                <div class="cseBottomBar">
+                    <p class="cseTextBoxLocked pull-left">Christian is typing in this field</p>
+                    <div class="pull-right">
+                        <button class="cseButtonFrame">Edit</button>
+                        <button class="cseButtonFrame">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="row">
+    @using (Html.BeginForm("Create", "POI", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <div class="col-md-offset-1 col-md-10 container-fluid">
+            <div class="col-md-12">
+                <h2>How &amp; when will you celebrate your first success?</h2>
+
+                <p>Being an idea maker and entrepreneur, you will probably experience a lot of ups and downs. Often, entrepreneurs are too hard on themselves and have a tendency to forget to celebrate the success along the way - don't let it happen to you!</p><br />
+                <p>Consider - what is the next milestone in your team in relation to this idea? What will you have to achieve - and evenly important, how will you celebrate it?</p>
+                <p>Try make celebration a part of your team culture - it starts at your weekly meetings and in day-to-day communication.</p>
+
+                @Html.TextArea("Question", new { @class = "cseBlueFrame", @placeholder = @ResourceLang.NewEmailBody, @style = "border-style:none;font-size:1.5em;width:100%", @rows = "6", @cols = "2" })
+
+                <div class="cseBottomBar">
+                    <p class="cseTextBoxLocked pull-left">Christian is typing in this field</p>
+                    <div class="pull-right">
+                        <button class="cseButtonFrame">Edit</button>
+                        <button class="cseButtonFrame">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="row">
+    @using (Html.BeginForm("Create", "POI", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <div class="col-md-offset-1 col-md-10 container-fluid">
+            <div class="col-md-12">
+                <h2>What are the first 3 things, you can do to test your idea - starting from today?</h2>
+
+                @Html.TextArea("Question", new { @class = "cseBlueFrame", @placeholder = @ResourceLang.NewEmailBody, @style = "border-style:none;font-size:1.5em;width:100%", @rows = "6", @cols = "2" })
+
+                <div class="cseBottomBar">
+                    <p class="cseTextBoxLocked pull-left">Christian is typing in this field</p>
+                    <div class="pull-right">
+                        <button class="cseButtonFrame">Edit</button>
+                        <button class="cseButtonFrame">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

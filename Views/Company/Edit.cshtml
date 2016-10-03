@@ -1,0 +1,156 @@
+﻿@using GroupM.CSE.ProofOfIdea.Models
+@using Microsoft.AspNet.Identity
+@using Microsoft.AspNet.Identity.Owin
+@model CompanyViewModel
+@{
+    ViewBag.Title = (Model != null ? Model.Name : ViewBag.CompanyId); ;
+
+    ApplicationUser loggedInUser = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().FindByName(User.Identity.Name);
+    ApplicationUserManager appUsrMgr = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
+}
+
+<h1>@ResourceLang.Company</h1>
+
+<div class="row">
+    <div class="col-md-8 container-fluid cseLightGreyFrame">
+        <div class="cseButtonSolidMd" style="width:100%;text-align:left">
+            <span class="">@ResourceLang.CompanyInfo.ToUpper()</span>
+        </div>
+        <div class="" style="width:100%;padding:20px">
+            <div class="form-group cseInputLine row">
+                @Html.LabelFor(m => m.Name, ResourceLang.CompanyName, new { @class = "control-label col-sm-3 text-left pull-left" })
+                <div class="col-sm-5 pull-right">
+                    @Model.Name
+                </div>
+            </div>
+            <div class="form-group cseInputLine row">
+                @Html.LabelFor(m => m.ProfileDescription, ResourceLang.CompanyProfile, new { @class = "control-label col-sm-3 text-left" })
+                <div class="col-sm-5 pull-right">
+                    @Model.ProfileDescription
+                </div>
+            </div>
+            <div class="form-group cseInputLine row">
+                @Html.LabelFor(m => m.Members, ResourceLang.CompanyMembers, new { @class = "control-label col-sm-3 text-left" })
+                <div class="col-sm-5 pull-right">
+                    @{
+                        if (Model.Members != null)
+                        {
+                            using (var db = new ApplicationDbContext())
+                            {
+                                foreach (var memberUserId in Model.Members)
+                                {
+                                    var memberUser = db.Users.FirstOrDefault(u => u.Id == memberUserId);
+
+                                    <span>@memberUser.Fullname</span>
+                                    if (Model.AdministratorId == memberUser.Id)
+                                    {
+                                        <span style="font-weight:bold"> (@ResourceLang.CompanyAdministrator)</span>
+                                    }
+                                    <br />
+                                }
+                            }
+                        }
+                    }
+                </div>
+            </div>
+            <div class="form-group cseInputLine row">
+                @Html.LabelFor(m => m.Website, ResourceLang.CompanyWebsite, new { @class = "control-label col-sm-3 text-left" })
+                <div class="col-sm-5 pull-right">
+                    @Model.Website
+                </div>
+            </div>
+            <div class="form-group cseInputLine row">
+                @Html.LabelFor(m => m.VATStatus, ResourceLang.CompanyCvrStatus, new { @class = "control-label col-sm-3 text-left" })
+                <div class="col-sm-5 pull-right">
+                    @Model.VATStatus.ToString()
+                </div>
+            </div>
+
+            <div class="form-group cseInputLine row">
+                @Html.LabelFor(m => m.Membership, ResourceLang.CompanyMembership, new { @class = "control-label col-sm-3 text-left" })
+                <div class="col-sm-5 pull-right">
+                    @Model.Membership
+                </div>
+            </div>
+            <div class="form-group cseInputLine row">
+                @Html.LabelFor(m => m.Place, ResourceLang.CompanyPlace, new { @class = "control-label col-sm-3 text-left" })
+                <div class="col-sm-5 pull-right">
+                    @Model.Place
+                </div>
+            </div>
+
+            <div class="form-group cseInputLine row">
+                @Html.LabelFor(m => m.Exit, ResourceLang.CompanyExit, new { @class = "control-label col-sm-3 text-left" })
+                <div class="col-sm-5 pull-right">
+                    @Model.Exit
+                </div>
+            </div>
+            <div class="form-group cseInputLine row">
+                @Html.LabelFor(m => m.ExitBusiness, ResourceLang.CompanyExitBusiness, new { @class = "control-label col-sm-3 text-left" })
+                <div class="col-sm-5 pull-right">
+                    @Model.ExitBusiness
+                </div>
+            </div>
+            <div class="form-group cseInputLine row">
+                @Html.LabelFor(m => m.ExitScale, ResourceLang.CompanyExitScale, new { @class = "control-label col-sm-3 text-left" })
+                <div class="col-sm-5 pull-right">
+                    @Model.ExitScale
+                </div>
+            </div>
+
+            <div class="form-group cseInputLine row">
+                @Html.LabelFor(m => m.ClusterId, ResourceLang.CompanyClusterItem, new { @class = "control-label col-sm-3 text-left" })
+                <div class="col-sm-5 pull-right">
+                    @{
+                        string clusterName = null;
+                        using (var db = new ApplicationDbContext())
+                        {
+                            var clusterItem = db.Clusters.FirstOrDefault(c => c.Id == Model.ClusterId);
+                            if (clusterItem != null)
+                            {
+                                clusterName = clusterItem.Name;
+                            }
+                        }
+                    }
+                    @(clusterName != null && !String.IsNullOrWhiteSpace(clusterName) ? Html.LabelFor(m => m.ClusterId, clusterName) : Html.LabelFor(m => m.ClusterId, ResourceLang.ErrorClusterNotSelected, new { @class = "cseError" }))
+                </div>
+            </div>
+            <div class="form-group row cseInputLine">
+                @Html.LabelFor(m => m.MentorId, ResourceLang.CompanyMentor, new { @class = "control-label col-sm-3 text-left" })
+                <div class="col-sm-5 pull-right">
+                    @{
+                        if (!String.IsNullOrWhiteSpace(Model.MentorId))
+                        {
+                            using (var db = new ApplicationDbContext())
+                            {
+                                MentorProfile mentor = db.Mentors.FirstOrDefault(m => m.UserId == Model.MentorId);
+                                if (mentor != null)
+                                {
+                                    <span>@mentor.User.Fullname</span>
+                                }
+
+                            }
+                        }
+                        else
+                        {
+                            <span class="cseError">@ResourceLang.MentorNotSelected</span>
+                        }
+                    }
+                </div>
+            </div>
+            @if (loggedInUser != null && appUsrMgr.IsInRole(loggedInUser.Id, "CSE_SuperAdmins"))
+            {
+                using (Html.BeginForm("ChangeStatus", "Company", FormMethod.Post, new { @id = "frmChangeStatus", @name = "@frmChangeStatus" }))
+                {
+                    @Html.HiddenFor(m => m.Id)
+                    <div class="form-group row cseInputLine">
+                        @Html.LabelFor(m => m.Status)
+                        <div class="col-sm-5 pull-right">
+                            @Html.EnumDropDownListFor(m => m.Status, new { @class = "col-md-2 form-control pull-right", @onChange = "$('#frmChangeStatus').submit()" })
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>

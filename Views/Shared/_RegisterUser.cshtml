@@ -1,0 +1,25 @@
+﻿@model GroupM.CSE.ProofOfIdea.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Register";
+}
+@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+    <div class="form-group center-block">
+        @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = @GroupM.CSE.ProofOfIdea.ResourceLang.Email })
+    </div>
+    <div class="form-group center-block">
+        @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder= @GroupM.CSE.ProofOfIdea.ResourceLang.Signup_CreatePassword })
+    </div>
+    <div class="form-group center-block">
+        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @placeholder= @GroupM.CSE.ProofOfIdea.ResourceLang.Signup_RepeatPassword })
+    </div>
+    <div class="form-group center-block">
+        <button type="submit" class="form-control cseButtonSolidMd" value="Register">@GroupM.CSE.ProofOfIdea.ResourceLang.Signup.ToUpper()</button>
+    </div>
+
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,30 @@
+﻿@using Microsoft.AspNet.Identity.Owin
+@using Microsoft.AspNet.Identity
+@using GroupM.CSE.ProofOfIdea.Models
+@{
+    ViewBag.Title = ResourceLang.Tasks;
+    ApplicationUser currentUser = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().FindByName(User.Identity.Name);
+}
+
+<div class="row">
+    @if (currentUser.Companies.Count <= 0)
+    {
+        <p>@ResourceLang.ProfileCompanyListEmptyCreateNew</p>
+        <a href="/company/create">@ResourceLang.CreateCompany</a>
+    }
+    else
+    {
+        foreach (var dbCompany in currentUser.Companies)
+        {
+            int taskCompletedStatus = (int)(((float)dbCompany.Tasks.Where(t => t.ApprovedBy != null).Count() / dbCompany.Tasks.Count()) * 100);
+            <div class="col-sm-10 row">
+                <div class="col-sm-4"><a href="/company/@dbCompany.Id/tasks">@dbCompany.Name</a></div>
+                <div class="col-sm-4 progress">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="@taskCompletedStatus" aria-valuemin=" 0" aria-valuemax="100" style="width: @taskCompletedStatus%;">
+                        <span class="sr-only">@(taskCompletedStatus)%</span>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
